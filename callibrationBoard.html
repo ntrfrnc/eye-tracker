@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Eye tracker calibration 1</title>
+
+    <style>
+      *{
+        box-sizing:border-box;
+      }
+      body{
+        margin:0;
+        padding:0;
+        background:#fff;
+        width:100%;
+        height:100vh;
+      }
+
+      svg{
+        vertical-align:top;
+      }
+      svg > line{
+        stroke: #000;
+        stroke-width:10px;
+      }
+
+      .target{
+        width: 200px;
+        height:200px;
+        position: absolute;
+        border: 50px solid #000;
+        box-shadow: inset 0 0 0 40px #fff;
+        background-color: #000;
+        border-radius: 50%;
+      }
+      .target.info:before{
+  content: 'x: ' attr(data-x);
+  position:absolute;
+  top:25%;
+  left:50%;
+  transform: translate(-50%, -50%);
+}
+.target.info:after{
+  content: 'y: ' attr(data-y);
+  position:absolute;
+  top:75%;
+  left:50%;
+  transform: translate(-50%, -50%);
+}
+      #target1{
+        top:0;
+        left:0;
+      }
+      #target2{
+        top:0;
+        right:0;
+      }
+      #target3{
+        bottom:0;
+        right:0;
+      }
+      #target4{
+        bottom:0;
+        left:0;
+      }
+      #target5{
+        top:50%;
+        left:50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="target" id="target1"></div>
+    <div class="target" id="target2"></div>
+    <div class="target" id="target3"></div>
+    <div class="target" id="target4"></div>
+    <div class="target" id="target5"></div>
+
+    <svg width='100%' height='100%' >
+    <line id="line1"/>
+    <line id="line2"/>
+    <line id="line3"/>
+    </svg>
+    <script>
+function update () {
+  var line1 = document.getElementById('line1');
+  var line2 = document.getElementById('line2');
+  var line3 = document.getElementById('line3');
+  var target1 = document.getElementById('target1');
+  var target2 = document.getElementById('target2');
+  var target3 = document.getElementById('target3');
+  var target4 = document.getElementById('target4');
+  var target5 = document.getElementById('target5');
+  
+  var t1Pos = getTargetPos(target1);
+  var t2Pos = getTargetPos(target2);
+  var t3Pos = getTargetPos(target3);
+  var t4Pos = getTargetPos(target4);
+  var t5Pos = getTargetPos(target5);
+  
+  setTargetCoord(target1, t1Pos);
+  setTargetCoord(target2, t2Pos);
+  setTargetCoord(target3, t3Pos);
+  setTargetCoord(target4, t4Pos);
+  setTargetCoord(target5, t5Pos);
+  
+  setLinePos(line1, t1Pos.x, t3Pos.x, t1Pos.y, t3Pos.y);
+  setLinePos(line2, t3Pos.x, t4Pos.x, t3Pos.y, t4Pos.y);
+  setLinePos(line3, t4Pos.x, t2Pos.x, t4Pos.y, t2Pos.y);
+}
+
+function getTargetPos(t){ 
+  return{
+    x:t.offsetLeft + t.offsetWidth/2,
+    y:t.offsetTop + t.offsetHeight/2
+  }
+}
+
+function setLinePos(line, x1, x2, y1, y2){
+  line.setAttribute('x1', x1);
+  line.setAttribute('x2', x2);
+  line.setAttribute('y1', y1);
+  line.setAttribute('y2', y2);
+}
+
+function setTargetCoord(target, tPos){
+  target.setAttribute('data-x', tPos.x);
+  target.setAttribute('data-y', tPos.y);
+}
+
+
+var timer = {
+    start: function () {
+        this.timerSteps = [];
+        var d = new Date();
+        this.timerStep.push(d.getTime());
+    },
+    
+    addStep: function () {
+        d = new Date();
+        timerStep.push(d.getTime());
+    }
+}
+
+function keyCommands(e) {
+  switch(e.keyCode){
+    case 73: // i
+      var targets = document.querySelectorAll('.target');
+      for(var i = 0; i<targets.length; i++){
+        targets[i].classList.toggle('info');
+      }
+      break;
+      
+    case 32: // Space
+        if(!timer.started){
+          startTimer();
+        } else {
+          addTmerStep();
+        }
+        
+  }
+}
+
+update();
+window.addEventListener('resize', update, false);
+window.addEventListener('keyup', keyCommands, false);
+    </script>
+  </body>
+</html>
