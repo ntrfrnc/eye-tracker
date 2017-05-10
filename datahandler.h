@@ -1,8 +1,12 @@
 #ifndef DATAHANDLER_H
 #define DATAHANDLER_H
 
+#include "serialportreader.h"
+
 #include <QObject>
 #include <QString>
+#include <QtSerialPort>
+#include <fstream>
 
 // struktura przechowywująca sygnały z urządzenia
 struct Packet {
@@ -51,12 +55,28 @@ struct Packet {
 class DataHandler : public QObject {
   Q_OBJECT
 
+  qint32 baudRate;
+  QSerialPort::StopBits stopBits;
+  QSerialPort::Parity parity;
+  QString frameMarker;
+  qint16 frameLength;
+
+  QSerialPort serialPort;
+  SerialPortReader dataReader;
+
+  int bit12ToInt(QString input);
+
  public:
   explicit DataHandler(QObject *parent = 0);
-
+  void datasaveOutput(Packet *buff, std::ofstream &file, int packetsRead);
+  Packet getPacket(QByteArray frame);
+  void startReading(QString serialPortName);
+  void stopReading();
  signals:
+  void eyePositionRead(QPointF point);
 
  public slots:
+  void readHandler(QByteArray frame);
 };
 
 #endif  // DATAHANDLER_H

@@ -15,4 +15,7 @@ void EyePointerWidget::paintEvent(QPaintEvent *) {
   painter.drawPoint(point);
 }
 
-void EyePointerWidget::setPoint(QPointF point) { this->point = point; }
+void EyePointerWidget::setPoint(QPointF point) {
+    this->point = point;
+    this->repaint();
+}

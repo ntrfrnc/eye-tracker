@@ -8,7 +8,7 @@
 class SessionHandler : public QWidget {
   QUrl filePath;
   QUrl bgUrl;
-  QString serialPort;
+  QString serialPortName;
 //  EyePointerWidget *pointerWidget;
 
   void keyPressEvent(QKeyEvent *event);

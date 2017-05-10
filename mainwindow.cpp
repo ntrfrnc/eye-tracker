@@ -8,10 +8,16 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
-  const auto infos = QSerialPortInfo::availablePorts();
-  for (const QSerialPortInfo &info : infos) {
-    ui->serialPortComboBox->addItem(info.portName());
-  }
+//    ui->serialPortComboBox->addItem(QString("COM3"));
+//    ui->serialPortComboBox->addItem(QString("/dev/ttyS0"));
+//    ui->serialPortComboBox->addItem(QString("/dev/ttyUSB0"));
+//    ui->serialPortComboBox->addItem(QString("/dev/pts/3"));
+
+//  const auto infos = QSerialPortInfo::availablePorts();
+//  for (const QSerialPortInfo &info : infos) {
+//    ui->serialPortComboBox->addItem(info.portName());
+//  }
+
 
   ui->setupUi(this);
 
@@ -27,6 +33,6 @@ void MainWindow::on_startCallibrationPushButton_clicked() {
 }
 
 void MainWindow::on_startNewSessionPushButton_clicked() {
-  SessionHandler *session = new SessionHandler(QUrl(ui->fileNameLineEdit->text()), QUrl(ui->boardBgLineEdit->text()), ui->serialPortComboBox->currentText());
+  SessionHandler *session = new SessionHandler(QUrl(ui->fileNameLineEdit->text()), QUrl(ui->boardBgLineEdit->text()), ui->serialPortNameLineEdit->text());
   session->start();
 }

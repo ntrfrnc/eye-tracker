@@ -7,11 +7,12 @@
 #include <QSizePolicy>
 #include <QWebEngineView>
 #include "eyepointerwidget.h"
+#include "datahandler.h"
 
-SessionHandler::SessionHandler(QUrl filePath, QUrl bgUrl, QString serialPort) {
+SessionHandler::SessionHandler(QUrl filePath, QUrl bgUrl, QString serialPortName) {
   this->filePath = filePath;
   this->bgUrl = bgUrl;
-  this->serialPort = serialPort;
+  this->serialPortName = serialPortName;
 }
 
 void SessionHandler::start() {
@@ -32,6 +33,11 @@ void SessionHandler::start() {
   show();
 
   pointerWidget->setPoint(QPointF(960.0, 540.0));
+
+  DataHandler *positionReader = new DataHandler;
+  connect(positionReader, &DataHandler::eyePositionRead, pointerWidget, &EyePointerWidget::setPoint);
+  positionReader->startReading(serialPortName);
+
   pointerWidget->show();
 }
 

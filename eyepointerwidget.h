@@ -12,11 +12,11 @@ class EyePointerWidget : public QWidget {
 
  public:
   explicit EyePointerWidget(QWidget *parent = 0);
-  void setPoint(QPointF point);
 
  signals:
 
  public slots:
+  void setPoint(QPointF point);
 };
 
 #endif  // EYEPOINTERWIDGET_H
