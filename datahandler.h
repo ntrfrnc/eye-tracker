@@ -58,7 +58,7 @@ class DataHandler : public QObject {
   qint32 baudRate;
   QSerialPort::StopBits stopBits;
   QSerialPort::Parity parity;
-  QString frameMarker;
+  QByteArray frameMarker;
   qint16 frameLength;
 
   QSerialPort serialPort;

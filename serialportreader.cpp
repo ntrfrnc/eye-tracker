@@ -1,7 +1,7 @@
 #include "serialportreader.h"
 #include <QDebug>
 
-SerialPortReader::SerialPortReader(QSerialPort *serialPort, QString frameMarker,
+SerialPortReader::SerialPortReader(QSerialPort *serialPort, QByteArray frameMarker,
                                    qint16 frameLength, QObject *parent)
     : QObject(parent),
       m_frameMarker(frameMarker),
@@ -21,7 +21,7 @@ void SerialPortReader::setFrameLength(qint16 frameLength) {
   m_frameLength = frameLength;
 }
 
-void SerialPortReader::setFrameMarker(QString frameMarker) {
+void SerialPortReader::setFrameMarker(QByteArray frameMarker) {
   m_frameMarker = frameMarker;
 };
 
@@ -36,33 +36,34 @@ void SerialPortReader::start() {
 };
 
 void SerialPortReader::handleReadyRead() {
-  //    QString str="";
-  //    str.append(m_serialPort->readAll());
-  //    qDebug() << str;
+//    if (m_serialPort->bytesAvailable() < m_frameLength) {
+//      return;
+//    }
 
-    if (m_serialPort->bytesAvailable() < m_frameLength) {
-      return;
-    }
+  QByteArray data = m_serialPort->readAll();
+// qDebug() << data;
 //  qDebug() << m_frameLength;
 //  qDebug() << m_frameMarker;
-  dataBuffer.append(m_serialPort->readAll());
-qDebug() << "data too short";
+  dataBuffer.append(data);
+//qDebug() << "data too short";
   if (dataBuffer.size() < m_frameLength) {
     return;  // data to short
   }
-qDebug() << "frame marker not found";
+//qDebug() << "frame marker not found";
   int indexOfFrame = dataBuffer.indexOf(m_frameMarker);
-
+//qDebug() << m_frameMarker;
   if (indexOfFrame < 0) {
     return;  // frame marker not found
   }
-qDebug() << "frame is not complete";
+//qDebug() << "frame is not complete";
   if ((dataBuffer.size() - indexOfFrame) < m_frameLength) {
     return;  // frame is not complete
   }
-qDebug() << "jest ok";
+//  qDebug() << dataBuffer;
+//qDebug() << "jest ok";
+//qDebug() << indexOfFrame;
   QByteArray frame = dataBuffer.mid(indexOfFrame, m_frameLength);
-
+//qDebug() << frame;
   // Remove processed data from the buffer
   dataBuffer = dataBuffer.right(indexOfFrame + m_frameLength);
 

@@ -2,14 +2,12 @@
 
 #include <string>
 
-#define PACKET 56
-
-DataHandler::DataHandler(QObject *parent) : QObject(parent){
+DataHandler::DataHandler(QObject *parent) : QObject(parent) {
   baudRate = 300000;
   stopBits = QSerialPort::OneStop;
   parity = QSerialPort::NoParity;
-  frameMarker = "\x0\x0\x0";
-  frameLength = PACKET;
+  frameMarker = QByteArray::fromHex("000000");
+  frameLength = 56;
 
   serialPort.setBaudRate(baudRate);
   serialPort.setStopBits(stopBits);
@@ -37,10 +35,11 @@ void DataHandler::stopReading() {
 
 void DataHandler::readHandler(QByteArray frame) {
   Packet packet = getPacket(frame);
-  //  qDebug() << "x: " << packet.eye_x_1;
-  //  qDebug() << "y: " << packet.eye_y_1;
-  int x = bit12ToInt(packet.eye_x_1);
-  int y = bit12ToInt(packet.eye_y_1);
+//  qDebug() << "synchro: " << packet.synchronization;
+//  qDebug() << "x: " << packet.eye_x_0;
+//  qDebug() << "y: " << packet.eye_y_0;
+  int x = bit12ToInt(packet.eye_x_0);
+  int y = bit12ToInt(packet.eye_y_0);
   QPointF point(x, y);
   qDebug() << "x: " << x;
   qDebug() << "y: " << y;
@@ -60,12 +59,13 @@ int DataHandler::bit12ToInt(QString input) {
 // funkcaj pobierająca pojedyńczy pakiet
 Packet DataHandler::getPacket(QByteArray frame) {
   Packet packet;
-  int bit, counter = 0;
+  int counter = 0;
+  char bit;
 
   // zamiana bajtów na bity i przypisanie ich do sygnałów
-  for (int i = 0; i < PACKET; i++)
-    for (int j = 7; j >= 0; j--) {
-      bit = (((frame[i] - 48) >> j) & 1) + 48;
+  for (int i = 0; i < frame.size(); ++i) {
+    for (int j = 0; j < 8; j++) {
+      bit = 48 + (frame[i] >> (7 - j) & 1);
       if (counter < 24) packet.synchronization += bit;
       if (counter > 23 && counter < 36) packet.eye_y_0 += bit;
       if (counter > 35 && counter < 48) packet.eye_x_0 += bit;
@@ -105,6 +105,7 @@ Packet DataHandler::getPacket(QByteArray frame) {
       if (counter > 439) packet.C3 += bit;
       counter++;
     }
+  }
 
   return packet;
 }
