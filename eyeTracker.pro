@@ -30,14 +30,16 @@ SOURCES += main.cpp\
     sessionhandler.cpp \
     eyepointerwidget.cpp \
     datahandler.cpp \
-    serialportreader.cpp
+    serialportreader.cpp \
+    calibration.cpp
 
 HEADERS  += mainwindow.h \
     callibrationhandler.h \
     sessionhandler.h \
     eyepointerwidget.h \
     datahandler.h \
-    serialportreader.h
+    serialportreader.h \
+    calibration.h
 
 FORMS    += mainwindow.ui
 
