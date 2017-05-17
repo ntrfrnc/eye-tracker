@@ -23,7 +23,9 @@ class MainWindow : public QMainWindow {
   void on_startCallibrationPushButton_clicked();
   void on_startNewSessionPushButton_clicked();
 
- private:
+  void on_stopSessionPushButton_clicked();
+
+private:
   Ui::MainWindow *ui;
 };
 
