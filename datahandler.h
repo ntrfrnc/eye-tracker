@@ -6,7 +6,6 @@
 #include <QObject>
 #include <QString>
 #include <QtSerialPort>
-#include <fstream>
 
 // struktura przechowywująca sygnały z urządzenia
 struct Packet {
@@ -68,7 +67,6 @@ class DataHandler : public QObject {
 
  public:
   explicit DataHandler(QObject *parent = 0);
-  void datasaveOutput(Packet *buff, std::ofstream &file, int packetsRead);
   Packet getPacket(QByteArray frame);
   void startReading(QString serialPortName);
   void stopReading();

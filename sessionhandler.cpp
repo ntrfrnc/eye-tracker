@@ -9,7 +9,7 @@
 
 SessionHandler::SessionHandler() {}
 
-void SessionHandler::setFilePath(QUrl path){
+void SessionHandler::setFilePath(QString path){
   this->filePath = path;
 };
 
@@ -22,7 +22,7 @@ void SessionHandler::setSerialPort(QString serialPortName){
 };
 
 void SessionHandler::setCalibration(Calibration *calibration){
-    this->calibration = calibration;
+  this->calibration = calibration;
 };
 
 void SessionHandler::start() {
@@ -47,6 +47,16 @@ void SessionHandler::start() {
   connect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget, &EyePointerWidget::setPoint);
   positionReader.startReading(serialPortName);
 
+  timer.restart();
+
+  outputFile.setFileName(filePath);
+  outputFile.open(QFile::ReadWrite | QFile::Text);
+  outputFileStream.setDevice(&outputFile);
+  if (outputFile.pos() == 0) {
+    // Add header if file is empty
+    outputFileStream << "Time [ms], Eye position X [px], Eye position Y [px] \n";
+  }
+
   pointerWidget.show();
 }
 
@@ -54,6 +64,7 @@ void SessionHandler::stop() {
   releaseKeyboard();
   disconnect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget, &EyePointerWidget::setPoint);
   positionReader.stopReading();
+  outputFile.close();
   hide();
 }
 
@@ -68,3 +79,8 @@ void SessionHandler::keyPressEvent(QKeyEvent *ke) {
       break;
   }
 }
+
+void SessionHandler::writePointToFile(QPointF point){
+  QPointF sPoint = calibration->getPointOnScreen(point);
+  outputFileStream << timer.elapsed() << "," << sPoint.x() << "," << sPoint.y();
+};

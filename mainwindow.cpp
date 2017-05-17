@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget* parent)
 
   ui->setupUi(this);
 
-  ui->fileNameLineEdit->setText(tr("output.txt"));
+  ui->fileNameLineEdit->setText(tr("output.csv"));
   ui->boardBgLineEdit->setText(tr("http://google.com"));
 }
 
@@ -31,7 +31,7 @@ void MainWindow::on_startCallibrationPushButton_clicked() {
 }
 
 void MainWindow::on_startNewSessionPushButton_clicked() {
-  sessionHandler.setFilePath(QUrl(ui->fileNameLineEdit->text()));
+  sessionHandler.setFilePath(ui->fileNameLineEdit->text());
   sessionHandler.setBgUrl(QUrl(ui->boardBgLineEdit->text()));
   sessionHandler.setSerialPort(ui->serialPortNameLineEdit->text());
   sessionHandler.setCalibration(&calibrationHandler.calibration);
