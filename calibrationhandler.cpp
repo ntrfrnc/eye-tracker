@@ -1,17 +1,17 @@
-#include "callibrationhandler.h"
+#include "calibrationhandler.h"
 #include <QDebug>
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QRect>
 #include <QScreen>
 
-CallibrationHandler::CallibrationHandler() {}
+CalibrationHandler::CalibrationHandler() {}
 
-void CallibrationHandler::setSerialPort(QString serialPortName) {
+void CalibrationHandler::setSerialPort(QString serialPortName) {
   this->serialPortName = serialPortName;
 }
 
-void CallibrationHandler::start() {
+void CalibrationHandler::start() {
   // Get screen resolution
   QScreen *screen = QGuiApplication::primaryScreen();
   QRect screenGeometry = screen->geometry();
@@ -21,7 +21,7 @@ void CallibrationHandler::start() {
   spaceCounter = 1;
 
   connect(&positionReader, &DataHandler::eyePositionRead, this,
-          &CallibrationHandler::setCurrentPoint);
+          &CalibrationHandler::setCurrentPoint);
   positionReader.startReading(serialPortName);
 
   // Create and show callibration board
@@ -31,21 +31,20 @@ void CallibrationHandler::start() {
   show();
 }
 
-void CallibrationHandler::stop() {
+void CalibrationHandler::stop() {
   spaceCounter = 1;
   releaseKeyboard();
   disconnect(&positionReader, &DataHandler::eyePositionRead, this,
-          &CallibrationHandler::setCurrentPoint);
-  positionReader.startReading(serialPortName);
+          &CalibrationHandler::setCurrentPoint);
   positionReader.stopReading();
   hide();
 }
 
-void CallibrationHandler::setCurrentPoint(QPointF point){
+void CalibrationHandler::setCurrentPoint(QPointF point){
     currentPoint = point;
 }
 
-void CallibrationHandler::keyPressEvent(QKeyEvent *ke) {
+void CalibrationHandler::keyPressEvent(QKeyEvent *ke) {
   if (ke->isAutoRepeat()) {
     return;
   }

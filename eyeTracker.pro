@@ -26,20 +26,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp\
-    callibrationhandler.cpp \
     sessionhandler.cpp \
     eyepointerwidget.cpp \
     datahandler.cpp \
     serialportreader.cpp \
-    calibration.cpp
+    calibration.cpp \
+    calibrationhandler.cpp
 
 HEADERS  += mainwindow.h \
-    callibrationhandler.h \
     sessionhandler.h \
     eyepointerwidget.h \
     datahandler.h \
     serialportreader.h \
-    calibration.h
+    calibration.h \
+    calibrationhandler.h
 
 FORMS    += mainwindow.ui
 

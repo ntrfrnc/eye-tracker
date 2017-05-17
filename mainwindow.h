@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "callibrationhandler.h"
+#include "calibrationhandler.h"
 #include "sessionhandler.h"
 
 namespace Ui {
@@ -13,7 +13,7 @@ class MainWindow : public QMainWindow {
   Q_OBJECT
 
   SessionHandler sessionHandler;
-  CallibrationHandler calibrationHandler;
+  CalibrationHandler calibrationHandler;
 
  public:
   explicit MainWindow(QWidget *parent = 0);

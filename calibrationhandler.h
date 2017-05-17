@@ -1,11 +1,11 @@
-#ifndef CALLIBRATIONHANDLER_H
-#define CALLIBRATIONHANDLER_H
+#ifndef CALIBRATIONHANDLER_H
+#define CALIBRATIONHANDLER_H
 
 #include <QWebEngineView>
 #include "calibration.h"
 #include "datahandler.h"
 
-class CallibrationHandler : public QWebEngineView {
+class CalibrationHandler : public QWebEngineView {
   QPointF *ePs;  // eyetracker calibration points
   uint spaceCounter;
   QPointF currentPoint;
@@ -17,7 +17,7 @@ class CallibrationHandler : public QWebEngineView {
  public:
   Calibration calibration;
 
-  CallibrationHandler();
+  CalibrationHandler();
   void start();
   void stop();
 
@@ -26,4 +26,4 @@ class CallibrationHandler : public QWebEngineView {
   void setSerialPort(QString serialPortName);
 };
 
-#endif  // CALLIBRATIONHANDLER_H
+#endif  // CALIBRATIONHANDLER_H
