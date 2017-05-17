@@ -4,6 +4,10 @@
 
 EyePointerWidget::EyePointerWidget(QWidget *parent) : QWidget(parent) {}
 
+void EyePointerWidget::setCalibration(Calibration *calibration){
+  this->calibration = calibration;
+}
+
 void EyePointerWidget::paintEvent(QPaintEvent *) {
   QPainter painter(this);
   painter.setBackgroundMode(Qt::TransparentMode);
@@ -16,6 +20,6 @@ void EyePointerWidget::paintEvent(QPaintEvent *) {
 }
 
 void EyePointerWidget::setPoint(QPointF point) {
-    this->point = point;
-    this->repaint();
+  this->point = calibration->getPointOnScreen(point);
+  this->repaint();
 }

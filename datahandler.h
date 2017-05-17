@@ -72,6 +72,7 @@ class DataHandler : public QObject {
   Packet getPacket(QByteArray frame);
   void startReading(QString serialPortName);
   void stopReading();
+
  signals:
   void eyePositionRead(QPointF point);
 

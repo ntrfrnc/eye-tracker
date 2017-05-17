@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <QWidget>
 #include "datahandler.h"
+#include "calibration.h"
 
 class SessionHandler : public QWidget {
   QUrl filePath;
@@ -12,11 +13,16 @@ class SessionHandler : public QWidget {
   QString serialPortName;
   EyePointerWidget pointerWidget;
   DataHandler positionReader;
+  Calibration *calibration;
 
   void keyPressEvent(QKeyEvent *event);
 
  public:
-  SessionHandler(QUrl filePath, QUrl bgUrl, QString serialPort);
+  SessionHandler();
+  void setFilePath(QUrl path);
+  void setBgUrl(QUrl url);
+  void setSerialPort(QString serialPortName);
+  void setCalibration(Calibration *calibration);
   void start();
   void stop();
 };

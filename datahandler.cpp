@@ -43,7 +43,6 @@ void DataHandler::readHandler(QByteArray frame) {
   QPointF point(x, y);
   qDebug() << "x: " << x;
   qDebug() << "y: " << y;
-  // TODO: callibration
 
   // Invoke eyePositionRead signal
   eyePositionRead(point);
@@ -56,7 +55,6 @@ int DataHandler::bit12ToInt(QString input) {
   return x;
 }
 
-// funkcaj pobierająca pojedyńczy pakiet
 Packet DataHandler::getPacket(QByteArray frame) {
   Packet packet;
   int counter = 0;
@@ -110,7 +108,6 @@ Packet DataHandler::getPacket(QByteArray frame) {
   return packet;
 }
 
-// funkcja zapisująca pakiety z bufora do pliku
 void DataHandler::datasaveOutput(Packet *buff, std::ofstream &file,
                                  int packetsRead) {
   for (int i = 0; i < packetsRead; i++) {

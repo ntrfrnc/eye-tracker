@@ -7,11 +7,23 @@
 #include <QSizePolicy>
 #include <QWebEngineView>
 
-SessionHandler::SessionHandler(QUrl filePath, QUrl bgUrl, QString serialPortName) {
-  this->filePath = filePath;
-  this->bgUrl = bgUrl;
+SessionHandler::SessionHandler() {}
+
+void SessionHandler::setFilePath(QUrl path){
+  this->filePath = path;
+};
+
+void SessionHandler::setBgUrl(QUrl url){
+  this->bgUrl = url;
+};
+
+void SessionHandler::setSerialPort(QString serialPortName){
   this->serialPortName = serialPortName;
-}
+};
+
+void SessionHandler::setCalibration(Calibration *calibration){
+    this->calibration = calibration;
+};
 
 void SessionHandler::start() {
   // Create and show session board
@@ -30,6 +42,7 @@ void SessionHandler::start() {
   show();
 
   pointerWidget.setPoint(QPointF(960.0, 540.0));
+  pointerWidget.setCalibration(calibration);
 
   connect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget, &EyePointerWidget::setPoint);
   positionReader.startReading(serialPortName);

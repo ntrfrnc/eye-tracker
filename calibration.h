@@ -11,7 +11,7 @@ class Calibration : public QObject {
   uint screenWidth;
   uint screenHeight;
   QPointF *sPs; // screen calibration points
-  QPointF *ePs; // eyetracker points
+  QPointF *ePs; // eyetracker calibration points
   qreal ax;
   qreal ay;
   qreal bx;

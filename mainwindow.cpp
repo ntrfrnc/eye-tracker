@@ -1,6 +1,4 @@
 #include "mainwindow.h"
-#include "callibrationhandler.h"
-#include "sessionhandler.h"
 #include "ui_mainwindow.h"
 
 #include <QtSerialPort/QSerialPortInfo>
@@ -28,11 +26,14 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::on_startCallibrationPushButton_clicked() {
-  CallibrationHandler *callibration = new CallibrationHandler;
-  callibration->start();
+  calibrationHandler.setSerialPort(ui->serialPortNameLineEdit->text());
+  calibrationHandler.start();
 }
 
 void MainWindow::on_startNewSessionPushButton_clicked() {
-  SessionHandler *session = new SessionHandler(QUrl(ui->fileNameLineEdit->text()), QUrl(ui->boardBgLineEdit->text()), ui->serialPortNameLineEdit->text());
-  session->start();
+  sessionHandler.setFilePath(QUrl(ui->fileNameLineEdit->text()));
+  sessionHandler.setBgUrl(QUrl(ui->boardBgLineEdit->text()));
+  sessionHandler.setSerialPort(ui->serialPortNameLineEdit->text());
+  sessionHandler.setCalibration(&calibrationHandler.calibration);
+  sessionHandler.start();
 }
