@@ -4,12 +4,14 @@
 #include <eyepointerwidget.h>
 #include <QUrl>
 #include <QWidget>
+#include "datahandler.h"
 
 class SessionHandler : public QWidget {
   QUrl filePath;
   QUrl bgUrl;
   QString serialPortName;
-//  EyePointerWidget *pointerWidget;
+  EyePointerWidget pointerWidget;
+  DataHandler positionReader;
 
   void keyPressEvent(QKeyEvent *event);
 

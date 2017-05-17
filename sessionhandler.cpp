@@ -6,8 +6,6 @@
 #include <QPointF>
 #include <QSizePolicy>
 #include <QWebEngineView>
-#include "eyepointerwidget.h"
-#include "datahandler.h"
 
 SessionHandler::SessionHandler(QUrl filePath, QUrl bgUrl, QString serialPortName) {
   this->filePath = filePath;
@@ -20,29 +18,29 @@ void SessionHandler::start() {
   setWindowState(Qt::WindowFullScreen);
 
   QWebEngineView *bg = new QWebEngineView;
-  EyePointerWidget *pointerWidget = new EyePointerWidget;
   bg->load(bgUrl);
 
   QGridLayout *l = new QGridLayout;
   l->setMargin(0);
   l->addWidget(bg, 0, 0, 1, 1);
-  l->addWidget(pointerWidget, 0, 0, 1, 1);
+  l->addWidget(&pointerWidget, 0, 0, 1, 1);
 
   setLayout(l);
   grabKeyboard();
   show();
 
-  pointerWidget->setPoint(QPointF(960.0, 540.0));
+  pointerWidget.setPoint(QPointF(960.0, 540.0));
 
-  DataHandler *positionReader = new DataHandler;
-  connect(positionReader, &DataHandler::eyePositionRead, pointerWidget, &EyePointerWidget::setPoint);
-  positionReader->startReading(serialPortName);
+  connect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget, &EyePointerWidget::setPoint);
+  positionReader.startReading(serialPortName);
 
-  pointerWidget->show();
+  pointerWidget.show();
 }
 
 void SessionHandler::stop() {
   releaseKeyboard();
+  disconnect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget, &EyePointerWidget::setPoint);
+  positionReader.stopReading();
   hide();
 }
 
