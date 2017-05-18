@@ -1,13 +1,16 @@
 #include "sessionhandler.h"
 #include <QDebug>
-#include <QGridLayout>
 #include <QKeyEvent>
 #include <QPainter>
 #include <QPointF>
 #include <QSizePolicy>
-#include <QWebEngineView>
 
-SessionHandler::SessionHandler() {}
+SessionHandler::SessionHandler() {
+  layout.setMargin(0);
+  layout.addWidget(&background, 0, 0, 1, 1);
+  layout.addWidget(&pointerWidget, 0, 0, 1, 1);
+  setLayout(&layout);
+}
 
 void SessionHandler::setFilePath(QString path){
   this->filePath = path;
@@ -28,16 +31,7 @@ void SessionHandler::setCalibration(Calibration *calibration){
 void SessionHandler::start() {
   // Create and show session board
   setWindowState(Qt::WindowFullScreen);
-
-  QWebEngineView *bg = new QWebEngineView;
-  bg->load(bgUrl);
-
-  QGridLayout *l = new QGridLayout;
-  l->setMargin(0);
-  l->addWidget(bg, 0, 0, 1, 1);
-  l->addWidget(&pointerWidget, 0, 0, 1, 1);
-
-  setLayout(l);
+  background.load(bgUrl);
   grabKeyboard();
   show();
 

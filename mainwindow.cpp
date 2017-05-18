@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget* parent)
   ui->setupUi(this);
 
   ui->fileNameLineEdit->setText(tr("output.csv"));
-  ui->boardBgLineEdit->setText(tr("http://google.com"));
+  ui->boardBgLineEdit->setText(tr("qrc:///testBoard.html"));
 }
 
 MainWindow::~MainWindow() { delete ui; }

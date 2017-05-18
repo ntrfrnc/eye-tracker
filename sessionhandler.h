@@ -7,6 +7,8 @@
 #include <QUrl>
 #include <QWidget>
 #include <QTime>
+#include <QWebEngineView>
+#include <QGridLayout>
 #include "calibration.h"
 #include "datahandler.h"
 
@@ -14,6 +16,8 @@ class SessionHandler : public QWidget {
   QString filePath;
   QUrl bgUrl;
   QString serialPortName;
+  QWebEngineView background;
+  QGridLayout layout;
   EyePointerWidget pointerWidget;
   DataHandler positionReader;
   Calibration *calibration;

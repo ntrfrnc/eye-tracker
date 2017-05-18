@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>callibrationBoard.html</file>
         <file>help.html</file>
+        <file>testBoard.html</file>
     </qresource>
 </RCC>
