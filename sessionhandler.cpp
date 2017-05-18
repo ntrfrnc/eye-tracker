@@ -41,7 +41,7 @@ void SessionHandler::start() {
   grabKeyboard();
   show();
 
-  pointerWidget.setPoint(QPointF(960.0, 540.0));
+//  pointerWidget.setPoint(QPointF(960.0, 540.0));
   pointerWidget.setCalibration(calibration);
 
   connect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget, &EyePointerWidget::setPoint);
@@ -56,12 +56,14 @@ void SessionHandler::start() {
     // Add header if file is empty
     outputFileStream << "Time [ms], Eye position X [px], Eye position Y [px] \n";
   }
+  connect(&positionReader, &DataHandler::eyePositionRead, this, &SessionHandler::writePointToFile);
 
   pointerWidget.show();
 }
 
 void SessionHandler::stop() {
   releaseKeyboard();
+  disconnect(&positionReader, &DataHandler::eyePositionRead, this, &SessionHandler::writePointToFile);
   disconnect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget, &EyePointerWidget::setPoint);
   positionReader.stopReading();
   outputFile.close();
@@ -82,5 +84,5 @@ void SessionHandler::keyPressEvent(QKeyEvent *ke) {
 
 void SessionHandler::writePointToFile(QPointF point){
   QPointF sPoint = calibration->getPointOnScreen(point);
-  outputFileStream << timer.elapsed() << "," << sPoint.x() << "," << sPoint.y();
+  outputFileStream << timer.elapsed() << "," << sPoint.x() << "," << sPoint.y() << "\n";
 };
