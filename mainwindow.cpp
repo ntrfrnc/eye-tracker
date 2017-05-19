@@ -4,20 +4,22 @@
 #include <QTextBrowser>
 #include <QUrl>
 #include <QtSerialPort/QSerialPortInfo>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
-  //    ui->serialPortComboBox->addItem(QString("COM3"));
-  //    ui->serialPortComboBox->addItem(QString("/dev/ttyS0"));
-  //    ui->serialPortComboBox->addItem(QString("/dev/ttyUSB0"));
-  //    ui->serialPortComboBox->addItem(QString("/dev/pts/3"));
-
-  //  const auto infos = QSerialPortInfo::availablePorts();
-  //  for (const QSerialPortInfo &info : infos) {
-  //    ui->serialPortComboBox->addItem(info.portName());
-  //  }
-
   ui->setupUi(this);
+
+  const auto infos = QSerialPortInfo::availablePorts();
+  for (const QSerialPortInfo &info : infos) {
+    ui->serialPortComboBox->addItem(info.portName());
+  }
+
+  ui->serialPortComboBox->insertSeparator(infos.length());
+
+  ui->serialPortComboBox->addItem(QString("COM3"));
+  ui->serialPortComboBox->addItem(QString("/dev/ttyUSB0"));
+  ui->serialPortComboBox->addItem(QString("/dev/pts/3"));
 
   ui->fileNameLineEdit->setText(tr("output.csv"));
   ui->boardBgLineEdit->setText(tr("qrc:///testBoard.html"));
@@ -49,4 +51,25 @@ void MainWindow::on_stopSessionPushButton_clicked() {
 
   help->setHtml(ReadFile.readAll());
   help->show();
+}
+
+void MainWindow::on_browseFileNamePushButton_clicked() {
+  QString fileName = QFileDialog::getSaveFileName(
+      this, tr("Choose CSV file path"), "output.csv", tr("CSV file (*.csv)"));
+
+  if (fileName != "") {
+    ui->fileNameLineEdit->setText(fileName);
+  }
+}
+
+void MainWindow::on_browseBoardBgPushButton_clicked() {
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Choose HTML file"), "",
+                                                  tr("HTML files (*.html)"));
+  if (fileName != "") {
+    ui->boardBgLineEdit->setText(fileName);
+  }
+}
+
+void MainWindow::on_serialPortComboBox_currentIndexChanged(const QString &arg1){
+  ui->serialPortNameLineEdit->setText(arg1);
 }
