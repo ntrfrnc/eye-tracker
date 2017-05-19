@@ -19,12 +19,16 @@ DataHandler::DataHandler(QObject *parent) : QObject(parent) {
   dataReader.start();
 }
 
-void DataHandler::startReading(QString serialPortName) {
+bool DataHandler::startReading(QString serialPortName) {
   serialPort.setPortName(serialPortName);
-  serialPort.open(QIODevice::ReadOnly);
+  if (!serialPort.open(QIODevice::ReadOnly)) {
+      return false;
+  };
 
   connect(&dataReader, &SerialPortReader::frameRead, this,
           &DataHandler::readHandler);
+
+  return true;
 }
 
 void DataHandler::stopReading() {

@@ -2,13 +2,15 @@
 #define SESSIONHANDLER_H
 
 #include <eyepointerwidget.h>
+#include <QErrorMessage>
 #include <QFile>
-#include <QTextStream>
-#include <QUrl>
-#include <QWidget>
-#include <QTime>
-#include <QWebEngineView>
 #include <QGridLayout>
+#include <QTextStream>
+#include <QTime>
+#include <QUrl>
+#include <QWebEngineView>
+#include <QWidget>
+
 #include "calibration.h"
 #include "datahandler.h"
 
@@ -24,6 +26,7 @@ class SessionHandler : public QWidget {
   QFile outputFile;
   QTextStream outputFileStream;
   QTime timer;
+  QErrorMessage errorHandler;
 
   void keyPressEvent(QKeyEvent *event);
 

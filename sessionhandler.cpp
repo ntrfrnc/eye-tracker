@@ -12,53 +12,69 @@ SessionHandler::SessionHandler() {
   setLayout(&layout);
 }
 
-void SessionHandler::setFilePath(QString path){
-  this->filePath = path;
-};
+void SessionHandler::setFilePath(QString path) { this->filePath = path; };
 
-void SessionHandler::setBgUrl(QUrl url){
-  this->bgUrl = url;
-};
+void SessionHandler::setBgUrl(QUrl url) { this->bgUrl = url; };
 
-void SessionHandler::setSerialPort(QString serialPortName){
+void SessionHandler::setSerialPort(QString serialPortName) {
   this->serialPortName = serialPortName;
 };
 
-void SessionHandler::setCalibration(Calibration *calibration){
+void SessionHandler::setCalibration(Calibration *calibration) {
   this->calibration = calibration;
 };
 
 void SessionHandler::start() {
+  if (!positionReader.startReading(serialPortName)) {
+    errorHandler.showMessage("Can't connect to serial port.");
+    positionReader.stopReading();
+    return;
+  };
+
+  if(!calibration->isCalculated()){
+    errorHandler.showMessage("Calibration was not performed. You need to calibrate device first.");
+    positionReader.stopReading();
+    return;
+  }
+
+  pointerWidget.setCalibration(calibration);
+
   // Create and show session board
   setWindowState(Qt::WindowFullScreen);
   background.load(bgUrl);
   grabKeyboard();
   show();
 
-//  pointerWidget.setPoint(QPointF(960.0, 540.0));
-  pointerWidget.setCalibration(calibration);
+  //  pointerWidget.setPoint(QPointF(960.0, 540.0));
 
-  connect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget, &EyePointerWidget::setPoint);
-  positionReader.startReading(serialPortName);
+  connect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget,
+          &EyePointerWidget::setPoint);
 
   timer.restart();
 
   outputFile.setFileName(filePath);
-  outputFile.open(QFile::ReadWrite | QFile::Text);
-  outputFileStream.setDevice(&outputFile);
-  if (outputFile.pos() == 0) {
-    // Add header if file is empty
-    outputFileStream << "Time [ms], Eye position X [px], Eye position Y [px] \n";
+  if (outputFile.open(QFile::ReadWrite | QFile::Text)) {
+    outputFileStream.setDevice(&outputFile);
+    if (outputFile.pos() == 0) {
+      // Add header if file is empty
+      outputFileStream
+          << "Time [ms], Eye position X [px], Eye position Y [px] \n";
+    }
+    connect(&positionReader, &DataHandler::eyePositionRead, this,
+            &SessionHandler::writePointToFile);
+  } else {
+    errorHandler.showMessage("Can't open/create file to record data.");
   }
-  connect(&positionReader, &DataHandler::eyePositionRead, this, &SessionHandler::writePointToFile);
 
   pointerWidget.show();
 }
 
 void SessionHandler::stop() {
   releaseKeyboard();
-  disconnect(&positionReader, &DataHandler::eyePositionRead, this, &SessionHandler::writePointToFile);
-  disconnect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget, &EyePointerWidget::setPoint);
+  disconnect(&positionReader, &DataHandler::eyePositionRead, this,
+             &SessionHandler::writePointToFile);
+  disconnect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget,
+             &EyePointerWidget::setPoint);
   positionReader.stopReading();
   outputFile.close();
   hide();
@@ -76,7 +92,8 @@ void SessionHandler::keyPressEvent(QKeyEvent *ke) {
   }
 }
 
-void SessionHandler::writePointToFile(QPointF point){
+void SessionHandler::writePointToFile(QPointF point) {
   QPointF sPoint = calibration->getPointOnScreen(point);
-  outputFileStream << timer.elapsed() << "," << sPoint.x() << "," << sPoint.y() << "\n";
+  outputFileStream << timer.elapsed() << "," << sPoint.x() << "," << sPoint.y()
+                   << "\n";
 };

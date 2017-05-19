@@ -12,6 +12,14 @@ void CalibrationHandler::setSerialPort(QString serialPortName) {
 }
 
 void CalibrationHandler::start() {
+  if (!positionReader.startReading(serialPortName)) {
+    errorHandler.showMessage("Can't connect to serial port.");
+    return;
+  }
+
+  connect(&positionReader, &DataHandler::eyePositionRead, this,
+          &CalibrationHandler::setCurrentPoint);
+
   // Get screen resolution
   QScreen *screen = QGuiApplication::primaryScreen();
   QRect screenGeometry = screen->geometry();
@@ -19,10 +27,6 @@ void CalibrationHandler::start() {
   calibration.setScreenSize(screenGeometry.width(), screenGeometry.height());
   ePs = new QPointF[5];
   spaceCounter = 1;
-
-  connect(&positionReader, &DataHandler::eyePositionRead, this,
-          &CalibrationHandler::setCurrentPoint);
-  positionReader.startReading(serialPortName);
 
   // Create and show callibration board
   load(QUrl("qrc:///callibrationBoard.html"));
@@ -35,13 +39,13 @@ void CalibrationHandler::stop() {
   spaceCounter = 1;
   releaseKeyboard();
   disconnect(&positionReader, &DataHandler::eyePositionRead, this,
-          &CalibrationHandler::setCurrentPoint);
+             &CalibrationHandler::setCurrentPoint);
   positionReader.stopReading();
   hide();
 }
 
-void CalibrationHandler::setCurrentPoint(QPointF point){
-    currentPoint = point;
+void CalibrationHandler::setCurrentPoint(QPointF point) {
+  currentPoint = point;
 }
 
 void CalibrationHandler::keyPressEvent(QKeyEvent *ke) {
@@ -76,8 +80,11 @@ void CalibrationHandler::keyPressEvent(QKeyEvent *ke) {
 
         case 6:
           ePs[4] = currentPoint;  // Top right
-          calibration.calculateFactors(ePs);
           stop();
+
+          if(!calibration.calculateFactors(ePs)){
+            errorHandler.showMessage("Error occured during calibration. Please try again.");
+          }
           break;
       }
 

@@ -3,6 +3,7 @@
 Calibration::Calibration(QObject *parent) : QObject(parent) {
   cPointsQuantity = 5;
   sPs = new QPointF[cPointsQuantity];
+  calculated = false;
 }
 
 Calibration::Calibration(uint screenWidth, uint screenHeight) {
@@ -13,7 +14,13 @@ Calibration::Calibration(uint screenWidth, uint screenHeight) {
 
   sPs = new QPointF[cPointsQuantity];
   updateScreenPoints();
+
+  calculated = false;
 }
+
+bool Calibration::isCalculated(){
+    return calculated;
+};
 
 void Calibration::setScreenSize(uint width, uint height) {
   this->screenWidth = width;
@@ -30,7 +37,7 @@ void Calibration::updateScreenPoints() {
   sPs[4] = QPointF(screenWidth - edgeOffset, screenHeight - edgeOffset);  // Top right
 }
 
-void Calibration::calculateFactors(QPointF *ePs) {
+bool Calibration::calculateFactors(QPointF *ePs) {
   this->ePs = ePs;
 
   qreal n = cPointsQuantity;
@@ -81,7 +88,7 @@ void Calibration::calculateFactors(QPointF *ePs) {
   dY3 = Y3*(a*b-c*c)+Y1*(c*e-b*d)+Y2*(c*d-a*e);
 
   if(d0 == 0.0){
-      // TODO: handle exception
+      return false;
   }
 
   ax = dX1/d0;
@@ -91,6 +98,10 @@ void Calibration::calculateFactors(QPointF *ePs) {
   ay = dY1/d0;
   by = dY2/d0;
   cy = dY3/d0;
+
+  calculated = true;
+
+  return true;
 }
 
 QPointF Calibration::getPointOnScreen(QPointF point) {

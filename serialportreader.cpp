@@ -71,14 +71,12 @@ void SerialPortReader::handleReadyRead() {
   frameRead(frame);
 }
 
-void SerialPortReader::handleError(
-    QSerialPort::SerialPortError serialPortError) {
+void SerialPortReader::handleError(QSerialPort::SerialPortError serialPortError) {
   if (serialPortError == QSerialPort::ReadError) {
-    m_standardOutput << QObject::tr(
-                            "An I/O error occurred while reading the data from "
-                            "port %1, error: %2")
-                            .arg(m_serialPort->portName())
-                            .arg(m_serialPort->errorString())
-                     << endl;
+    errorHandler.showMessage(
+        tr("An I/O error occurred while reading the data from "
+           "port %1, error: %2")
+            .arg(m_serialPort->portName())
+            .arg(m_serialPort->errorString()));
   }
 }

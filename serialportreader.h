@@ -1,14 +1,21 @@
 #ifndef SERIALPORTREADER_H
 #define SERIALPORTREADER_H
 
-#include <QtSerialPort/QSerialPort>
-
 #include <QByteArray>
+#include <QErrorMessage>
 #include <QObject>
 #include <QTextStream>
+#include <QtSerialPort/QSerialPort>
 
 class SerialPortReader : public QObject {
   Q_OBJECT
+
+  QErrorMessage errorHandler;
+  QByteArray m_frameMarker;
+  qint16 m_frameLength;
+  QSerialPort *m_serialPort;
+  QByteArray dataBuffer;
+  QTextStream m_standardOutput;
 
  public:
   explicit SerialPortReader(QSerialPort *serialPort, QByteArray frameMarker,
@@ -24,16 +31,9 @@ class SerialPortReader : public QObject {
  signals:
   void frameRead(QByteArray frame);
 
- private slots:
+ public slots:
   void handleReadyRead();
   void handleError(QSerialPort::SerialPortError error);
-
- private:
-  QByteArray m_frameMarker;
-  qint16 m_frameLength;
-  QSerialPort *m_serialPort;
-  QByteArray dataBuffer;
-  QTextStream m_standardOutput;
 };
 
 #endif  // SERIALPORTREADER_H

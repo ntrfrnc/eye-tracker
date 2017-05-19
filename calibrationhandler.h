@@ -1,6 +1,7 @@
 #ifndef CALIBRATIONHANDLER_H
 #define CALIBRATIONHANDLER_H
 
+#include <QErrorMessage>
 #include <QWebEngineView>
 #include "calibration.h"
 #include "datahandler.h"
@@ -11,6 +12,7 @@ class CalibrationHandler : public QWebEngineView {
   QPointF currentPoint;
   QString serialPortName;
   DataHandler positionReader;
+  QErrorMessage errorHandler;
 
   void keyPressEvent(QKeyEvent *event);
 

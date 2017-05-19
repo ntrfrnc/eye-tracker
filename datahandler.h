@@ -68,7 +68,7 @@ class DataHandler : public QObject {
  public:
   explicit DataHandler(QObject *parent = 0);
   Packet getPacket(QByteArray frame);
-  void startReading(QString serialPortName);
+  bool startReading(QString serialPortName);
   void stopReading();
 
  signals:

@@ -18,13 +18,15 @@ class Calibration : public QObject {
   qreal by;
   qreal cx;
   qreal cy;
+  bool calculated;
 
  public:
   explicit Calibration(QObject *parent = 0);
   explicit Calibration(uint screenWidth, uint screenHeight);
   void setScreenSize(uint width, uint height);
   void updateScreenPoints();
-  void calculateFactors(QPointF *ePs);
+  bool calculateFactors(QPointF *ePs);
+  bool isCalculated();
   QPointF getPointOnScreen(QPointF point);
 
  signals:
