@@ -20,6 +20,13 @@ void EyePointerWidget::paintEvent(QPaintEvent *) {
 }
 
 void EyePointerWidget::setPoint(QPointF point) {
-  this->point = calibration->getPointOnScreen(point);
+  this->point = point;
+  this->repaint();
+}
+
+void EyePointerWidget::setEyesPosition(QPointF point) {
+  QPointF sPoint = calibration->getPointOnScreen(point);
+  sPoint.setY(calibration->getScreenHeight() - sPoint.y());
+  this->point = sPoint;
   this->repaint();
 }

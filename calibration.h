@@ -28,6 +28,8 @@ class Calibration : public QObject {
   bool calculateFactors(QPointF *ePs);
   bool isCalculated();
   QPointF getPointOnScreen(QPointF point);
+  uint getScreenWidth();
+  uint getScreenHeight();
 
  signals:
 

@@ -22,6 +22,14 @@ bool Calibration::isCalculated(){
     return calculated;
 };
 
+uint Calibration::getScreenWidth(){
+    return screenWidth;
+};
+
+uint Calibration::getScreenHeight(){
+    return screenHeight;
+};
+
 void Calibration::setScreenSize(uint width, uint height) {
   this->screenWidth = width;
   this->screenHeight = height;

@@ -45,10 +45,10 @@ void SessionHandler::start() {
   grabKeyboard();
   show();
 
-  //  pointerWidget.setPoint(QPointF(960.0, 540.0));
+  pointerWidget.setPoint(QPointF(960, 520));
 
   connect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget,
-          &EyePointerWidget::setPoint);
+          &EyePointerWidget::setEyesPosition);
 
   timer.restart();
 
@@ -66,6 +66,7 @@ void SessionHandler::start() {
     errorHandler.showMessage("Can't open/create file to record data.");
   }
 
+  pointerWidget.setAttribute(Qt::WA_TransparentForMouseEvents);
   pointerWidget.show();
 }
 

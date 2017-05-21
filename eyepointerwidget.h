@@ -22,6 +22,7 @@ class EyePointerWidget : public QWidget {
 
  public slots:
   void setPoint(QPointF point);
+  void setEyesPosition(QPointF point);
 };
 
 #endif  // EYEPOINTERWIDGET_H
