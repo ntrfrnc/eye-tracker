@@ -3,5 +3,6 @@
         <file>callibrationBoard.html</file>
         <file>help.html</file>
         <file>testBoard.html</file>
+        <file>app_icon.svg</file>
     </qresource>
 </RCC>

@@ -8,6 +8,7 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
+  setWindowIcon(QIcon(":/app_icon.svg"));
   ui->setupUi(this);
 
   const auto infos = QSerialPortInfo::availablePorts();

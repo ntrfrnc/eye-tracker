@@ -1,3 +1,9 @@
+<table><tbody><tr>
+<td style="vertical-align:middle;"><img src=":/app_icon.svg" /></td>
+<td style="vertical-align:middle;padding-left:6px;"><h1>Eye Tracker</h1></td>
+<tr></tbody></table>
+C++ Qt app for tracking eyes focus on screen by JAZZ-novo eye tracker device.
+
 <h2>How to use</h2>
 Firstly calibrate device input by clicking 'Start calibration' button and follow calibration procedure described below. If you go through calibration with success you can start new tracking session by clicking the 'New session' button, but before you must enter needed information in configuration form. 
 
@@ -19,3 +25,23 @@ You can exit this mode by hitting ESC key on keyboard.
 'Start new session' button allows entering session mode where you can see red dot on screen in the position of your eyes focus if the calibration is successful. On screen there is also displayed your test board chosen in the configuration as background.
 <br>
 You can exit this mode by hitting ESC key on keyboard.
+
+<h2>Session configuration</h2>
+
+<table style="margin-top:10px;"><tbody>
+<tr>
+<td style="padding-right:10px;padding-bottom:10px;"><b>Serial port name</b></td>
+<td style="padding-bottom:10px;">Name of serial port to which device is connected. Next to text field are listed detected ports and most likely ones like COM3 on Windows or ttyUSB0 on Linux.</td>
+</tr>
+
+<tr>
+<td style="padding-right:10px;padding-bottom:10px;"><b>Recorded data file</b></td>
+<td style="padding-bottom:10px;">Path of file where you want to log all data of eye position recorded during session.</td>
+</tr>
+
+<tr>
+<td style="padding-right:10px;padding-bottom:10px;"><b>Board background</b></td>
+<td style="padding-bottom:10px;">Link to website e.g. http://google.com, or local html file. You can also use default build in test board with one column of text: qrc:///testBoard.html .</td>
+</tr>
+
+</tbody></table>

@@ -22,16 +22,12 @@ class MainWindow : public QMainWindow {
  private slots:
   void on_startCallibrationPushButton_clicked();
   void on_startNewSessionPushButton_clicked();
-
   void on_stopSessionPushButton_clicked();
-
   void on_browseFileNamePushButton_clicked();
-
   void on_browseBoardBgPushButton_clicked();
-
   void on_serialPortComboBox_currentIndexChanged(const QString &arg1);
 
-private:
+ private:
   Ui::MainWindow *ui;
 };
 
