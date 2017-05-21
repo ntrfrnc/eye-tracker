@@ -2,6 +2,10 @@
 
 C++ Qt app for tracking eyes focus on screen by JAZZ-novo eye tracker device. 
 
+**Version** 0.1-alpha
+
+![img](Screenshot.png) 
+
 ## How to use
 
 Firstly calibrate device input by clicking `Start calibration` button and follow calibration procedure described below. If you go through calibration with success you can start new tracking session by clicking the `New session` button, but before you must enter needed information in configuration form. 
