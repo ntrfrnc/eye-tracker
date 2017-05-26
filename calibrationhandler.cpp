@@ -13,7 +13,8 @@ void CalibrationHandler::setSerialPort(QString serialPortName) {
 
 void CalibrationHandler::start() {
   if (!positionReader.startReading(serialPortName)) {
-    errorHandler.showMessage("Can't connect to serial port.");
+    errorHandler.showMessage(tr("Can't connect to serial port. Error: %1")
+                                 .arg(positionReader.errorString()));
     return;
   }
 
@@ -30,9 +31,8 @@ void CalibrationHandler::start() {
 
   // Create and show callibration board
   load(QUrl("qrc:///callibrationBoard.html"));
-  setWindowState(Qt::WindowFullScreen);
   grabKeyboard();
-  show();
+  showFullScreen();
 }
 
 void CalibrationHandler::stop() {

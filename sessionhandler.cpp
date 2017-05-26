@@ -26,7 +26,8 @@ void SessionHandler::setCalibration(Calibration *calibration) {
 
 void SessionHandler::start() {
   if (!positionReader.startReading(serialPortName)) {
-    errorHandler.showMessage("Can't connect to serial port.");
+    errorHandler.showMessage(tr("Can't connect to serial port. Error: %1")
+                                 .arg(positionReader.errorString()));
     positionReader.stopReading();
     return;
   };
@@ -40,10 +41,10 @@ void SessionHandler::start() {
   pointerWidget.setCalibration(calibration);
 
   // Create and show session board
-  setWindowState(Qt::WindowFullScreen);
   background.load(bgUrl);
+  background.show();
   grabKeyboard();
-  show();
+  showFullScreen();
 
   pointerWidget.setPoint(QPointF(960, 520));
 

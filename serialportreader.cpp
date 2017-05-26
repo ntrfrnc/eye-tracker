@@ -36,9 +36,9 @@ void SerialPortReader::start() {
 };
 
 void SerialPortReader::handleReadyRead() {
-//    if (m_serialPort->bytesAvailable() < m_frameLength) {
-//      return;
-//    }
+    if (m_serialPort->bytesAvailable() < m_frameLength) {
+      return;
+    }
 
   QByteArray data = m_serialPort->readAll();
 // qDebug() << data;

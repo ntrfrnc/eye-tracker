@@ -4,14 +4,11 @@
 
 DataHandler::DataHandler(QObject *parent) : QObject(parent) {
   baudRate = 300000;
+  dataBits = QSerialPort::Data8;
   stopBits = QSerialPort::OneStop;
   parity = QSerialPort::NoParity;
   frameMarker = QByteArray::fromHex("000000");
   frameLength = 56;
-
-  serialPort.setBaudRate(baudRate);
-  serialPort.setStopBits(stopBits);
-  serialPort.setParity(parity);
 
   dataReader.setSerialPort(&serialPort);
   dataReader.setFrameLength(frameLength);
@@ -19,9 +16,20 @@ DataHandler::DataHandler(QObject *parent) : QObject(parent) {
   dataReader.start();
 }
 
+QString DataHandler::errorString(){
+    return lastErrorMsg;
+}
+
 bool DataHandler::startReading(QString serialPortName) {
   serialPort.setPortName(serialPortName);
+
+  serialPort.setBaudRate(baudRate);
+  serialPort.setStopBits(stopBits);
+  serialPort.setParity(parity);
+  serialPort.setDataBits(dataBits);
+
   if (!serialPort.open(QIODevice::ReadOnly)) {
+      lastErrorMsg = serialPort.errorString();
       return false;
   };
 

@@ -57,6 +57,7 @@ class DataHandler : public QObject {
   qint32 baudRate;
   QSerialPort::StopBits stopBits;
   QSerialPort::Parity parity;
+  QSerialPort::DataBits dataBits;
   QByteArray frameMarker;
   qint16 frameLength;
 
@@ -65,11 +66,14 @@ class DataHandler : public QObject {
 
   int bit12ToInt(QString input);
 
+  QString lastErrorMsg;
+
  public:
   explicit DataHandler(QObject *parent = 0);
   Packet getPacket(QByteArray frame);
   bool startReading(QString serialPortName);
   void stopReading();
+  QString errorString();
 
  signals:
   void eyePositionRead(QPointF point);
