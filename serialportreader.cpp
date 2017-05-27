@@ -1,82 +1,90 @@
 #include "serialportreader.h"
 #include <QDebug>
 
-SerialPortReader::SerialPortReader(QSerialPort *serialPort, QByteArray frameMarker,
+SerialPortReader::SerialPortReader(QSerialPort *serialPort,
+                                   QByteArray frameStartMarker,
+                                   QByteArray frameEndMarker,
                                    qint16 frameLength, QObject *parent)
     : QObject(parent),
-      m_frameMarker(frameMarker),
-      m_frameLength(frameLength),
-      m_serialPort(serialPort),
-      m_standardOutput(stdout) {}
+      frameStartMarker(frameStartMarker),
+      frameEndMarker(frameEndMarker),
+      frameLength(frameLength),
+      serialPort(serialPort) {}
 
 SerialPortReader::SerialPortReader() {}
 
 SerialPortReader::~SerialPortReader() {}
 
 void SerialPortReader::setSerialPort(QSerialPort *serialPort) {
-  m_serialPort = serialPort;
+  this->serialPort = serialPort;
 };
 
 void SerialPortReader::setFrameLength(qint16 frameLength) {
-  m_frameLength = frameLength;
+  this->frameLength = frameLength;
 }
 
-void SerialPortReader::setFrameMarker(QByteArray frameMarker) {
-  m_frameMarker = frameMarker;
+void SerialPortReader::setFrameStartMarker(QByteArray frameStartMarker) {
+  this->frameStartMarker = frameStartMarker;
+};
+
+void SerialPortReader::setFrameEndMarker(QByteArray frameEndMarker) {
+  this->frameEndMarker = frameEndMarker;
 };
 
 void SerialPortReader::start() {
-  connect(m_serialPort, &QSerialPort::readyRead, this,
+  connect(serialPort, &QSerialPort::readyRead, this,
           &SerialPortReader::handleReadyRead);
 
-  connect(m_serialPort,
+  connect(serialPort,
           static_cast<void (QSerialPort::*)(QSerialPort::SerialPortError)>(
               &QSerialPort::error),
           this, &SerialPortReader::handleError);
 };
 
 void SerialPortReader::handleReadyRead() {
-    if (m_serialPort->bytesAvailable() < m_frameLength) {
-      return;
-    }
+  if (serialPort->bytesAvailable() < frameLength) {
+    return;
+  }
 
-  QByteArray data = m_serialPort->readAll();
-// qDebug() << data;
-//  qDebug() << m_frameLength;
-//  qDebug() << m_frameMarker;
+  QByteArray data = serialPort->readAll();
+  // qDebug() << data;
+  //  qDebug() << m_frameLength;
+  //  qDebug() << m_frameMarker;
   dataBuffer.append(data);
-//qDebug() << "data too short";
-  if (dataBuffer.size() < m_frameLength) {
+  // qDebug() << "data too short";
+  if (dataBuffer.size() < frameLength) {
     return;  // data to short
   }
-//qDebug() << "frame marker not found";
-  int indexOfFrame = dataBuffer.indexOf(m_frameMarker);
-//qDebug() << m_frameMarker;
+  // qDebug() << "frame marker not found";
+  int indexOfFrame = dataBuffer.indexOf(frameEndMarker + frameStartMarker) +
+                     frameEndMarker.length();
+  // qDebug() << m_frameMarker;
   if (indexOfFrame < 0) {
     return;  // frame marker not found
   }
-//qDebug() << "frame is not complete";
-  if ((dataBuffer.size() - indexOfFrame) < m_frameLength) {
+  // qDebug() << "frame is not complete";
+  if ((dataBuffer.size() - indexOfFrame) < frameLength) {
     return;  // frame is not complete
   }
-//  qDebug() << dataBuffer;
-//qDebug() << "jest ok";
-//qDebug() << indexOfFrame;
-  QByteArray frame = dataBuffer.mid(indexOfFrame, m_frameLength);
-//qDebug() << frame;
+  //  qDebug() << dataBuffer;
+  // qDebug() << "jest ok";
+  // qDebug() << indexOfFrame;
+  QByteArray frame = dataBuffer.mid(indexOfFrame, frameLength);
+  // qDebug() << frame;
   // Remove processed data from the buffer
-  dataBuffer = dataBuffer.right(indexOfFrame + m_frameLength);
+  dataBuffer = dataBuffer.right(indexOfFrame + frameLength);
 
   // Invoke frameRead signal
   frameRead(frame);
 }
 
-void SerialPortReader::handleError(QSerialPort::SerialPortError serialPortError) {
+void SerialPortReader::handleError(
+    QSerialPort::SerialPortError serialPortError) {
   if (serialPortError == QSerialPort::ReadError) {
     errorHandler.showMessage(
         tr("An I/O error occurred while reading the data from "
            "port %1, error: %2")
-            .arg(m_serialPort->portName())
-            .arg(m_serialPort->errorString()));
+            .arg(serialPort->portName())
+            .arg(serialPort->errorString()));
   }
 }

@@ -11,21 +11,24 @@ class SerialPortReader : public QObject {
   Q_OBJECT
 
   QErrorMessage errorHandler;
-  QByteArray m_frameMarker;
-  qint16 m_frameLength;
-  QSerialPort *m_serialPort;
+  QByteArray frameStartMarker;
+  QByteArray frameEndMarker;
+  qint16 frameLength;
+  QSerialPort *serialPort;
   QByteArray dataBuffer;
-  QTextStream m_standardOutput;
 
  public:
-  explicit SerialPortReader(QSerialPort *serialPort, QByteArray frameMarker,
-                            qint16 frameLength, QObject *parent = nullptr);
+  explicit SerialPortReader(QSerialPort *serialPort,
+                            QByteArray frameStartMarker,
+                            QByteArray frameEndMarker, qint16 frameLength,
+                            QObject *parent = nullptr);
   explicit SerialPortReader();
   ~SerialPortReader();
 
   void setSerialPort(QSerialPort *serialPort);
   void setFrameLength(qint16 frameLength);
-  void setFrameMarker(QByteArray frameMarker);
+  void setFrameStartMarker(QByteArray frameStartMarker);
+  void setFrameEndMarker(QByteArray frameEndMarker);
   void start();
 
  signals:

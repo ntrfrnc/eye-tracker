@@ -2,23 +2,28 @@
 
 #include <string>
 
-DataHandler::DataHandler(QObject *parent) : QObject(parent) {
-  baudRate = 300000;
-  dataBits = QSerialPort::Data8;
-  stopBits = QSerialPort::OneStop;
-  parity = QSerialPort::NoParity;
-  frameMarker = QByteArray::fromHex("000000");
-  frameLength = 56;
+DataHandler::DataHandler(QObject *parent)
+    : QObject(parent),
+      baudRate(300000),
+      dataBits(QSerialPort::Data8),
+      stopBits(QSerialPort::OneStop),
+      parity(QSerialPort::NoParity),
+      frameStartMarker(QByteArray::fromHex("000000")),
+      frameEndMarker(QByteArray::fromHex("FF")),
+      frameLength(56),
+      xBuffer(4, 2048),
+      yBuffer(4, 2048),
+      xOffset(0),
+      yOffset(0){
 
   dataReader.setSerialPort(&serialPort);
   dataReader.setFrameLength(frameLength);
-  dataReader.setFrameMarker(frameMarker);
+  dataReader.setFrameStartMarker(frameStartMarker);
+  dataReader.setFrameEndMarker(frameEndMarker);
   dataReader.start();
 }
 
-QString DataHandler::errorString(){
-    return lastErrorMsg;
-}
+QString DataHandler::errorString() { return lastErrorMsg; }
 
 bool DataHandler::startReading(QString serialPortName) {
   serialPort.setPortName(serialPortName);
@@ -47,12 +52,24 @@ void DataHandler::stopReading() {
 
 void DataHandler::readHandler(QByteArray frame) {
   Packet packet = getPacket(frame);
+
 //  qDebug() << "synchro: " << packet.synchronization;
 //  qDebug() << "x: " << packet.eye_x_0;
 //  qDebug() << "y: " << packet.eye_y_0;
-  int x = bit12ToInt(packet.eye_x_0);
-  int y = bit12ToInt(packet.eye_y_0);
+
+  xBuffer.removeFirst();
+  xBuffer.append(bit12ToInt(packet.eye_x_0));
+
+  yBuffer.removeFirst();
+  yBuffer.append(bit12ToInt(packet.eye_y_0));
+
+  trackOffsetX();
+  trackOffsetY();
+
+  qint32 x = xBuffer[2] + xOffset;
+  qint32 y = yBuffer[2] + yOffset;
   QPointF point(x, y);
+
   qDebug() << "x: " << x;
   qDebug() << "y: " << y;
 
@@ -60,11 +77,32 @@ void DataHandler::readHandler(QByteArray frame) {
   eyePositionRead(point);
 }
 
-int DataHandler::bit12ToInt(QString input) {
-  int x = input.toInt(Q_NULLPTR, 2);
-  // x = (x >> 11) == 0 ? x : (-1 ^ 0xFFF) | x;
+qint32 DataHandler::bit12ToInt(QString input) {
+  return input.toInt(Q_NULLPTR, 2);
+}
 
-  return x;
+void DataHandler::trackOffsetX() {
+  if (xBuffer[1] > 3939) {
+    xOffset -= calcOffsetX();
+  } else if (xBuffer[1] < 256) {
+    xOffset += calcOffsetX();
+  }
+};
+
+void DataHandler::trackOffsetY() {
+  if (yBuffer[1] > 3939) {
+    yOffset -= calcOffsetY();
+  } else if (yBuffer[1] < 256) {
+    yOffset += calcOffsetY();
+  }
+};
+
+qint32 DataHandler::calcOffsetX() {
+  return (xBuffer[0] - (3 * xBuffer[1]) + (3 * xBuffer[2]) - xBuffer[3]) / 2;
+}
+
+qint32 DataHandler::calcOffsetY() {
+  return (yBuffer[0] - (3 * yBuffer[1]) + (3 * yBuffer[2]) - yBuffer[3]) / 2;
 }
 
 Packet DataHandler::getPacket(QByteArray frame) {

@@ -7,9 +7,8 @@
 #include <QString>
 #include <QtSerialPort>
 
-// struktura przechowywująca sygnały z urządzenia
 struct Packet {
-  // ramka 1
+  // frame 1
   QString synchronization;
   QString eye_y_0;
   QString eye_x_0;
@@ -29,7 +28,7 @@ struct Packet {
   QString eye_b;
   QString COUNTER;
 
-  // ramka 2
+  // frame 2
   QString pul_I;
   QString pul_R;
   QString eye_y_1;
@@ -55,18 +54,28 @@ class DataHandler : public QObject {
   Q_OBJECT
 
   qint32 baudRate;
+  QSerialPort::DataBits dataBits;
   QSerialPort::StopBits stopBits;
   QSerialPort::Parity parity;
-  QSerialPort::DataBits dataBits;
-  QByteArray frameMarker;
+  QByteArray frameStartMarker;
+  QByteArray frameEndMarker;
   qint16 frameLength;
 
   QSerialPort serialPort;
   SerialPortReader dataReader;
 
-  int bit12ToInt(QString input);
-
   QString lastErrorMsg;
+
+  QVector<qint32> xBuffer;
+  QVector<qint32> yBuffer;
+  qint32 xOffset;
+  qint32 yOffset;
+
+  void trackOffsetX();
+  void trackOffsetY();
+  qint32 calcOffsetX();
+  qint32 calcOffsetY();
+  qint32 bit12ToInt(QString input);
 
  public:
   explicit DataHandler(QObject *parent = 0);
