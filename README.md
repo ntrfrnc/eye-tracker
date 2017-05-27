@@ -6,9 +6,37 @@ C++ Qt app for tracking eyes focus on screen by JAZZ-novo eye tracker device.
 
 ![img](Screenshot.png) 
 
+
+
+## Compilation
+
+You can compile program by Qt Creator with GCC (under Linux) or MSVC (under Windows) compiler.
+
+## Prerequisites
+
+### Install FTDI device virtual COM port drivers
+
+#### Windows
+
+Download it from http://www.ftdichip.com/Drivers/VCP.htm and install.
+
+#### Linux
+
+If you use Ubuntu (at least version 11.10 ) drivers are already in kernel. To automatically load appropriate driver when device is plugged in you have to:
+
+1. Create file `/etc/udev/rules.d/99-ftdi.rules` if it doesn't exist already.
+2. Add the following line to the file `ACTION=="add", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="e859", RUN+="/sbin/modprobe ftdi_sio" RUN+="/bin/sh -c 'echo 0403 e859 > /sys/bus/usb-serial/drivers/ftdi_sio/new_id'"`.
+3. Run `sudo udevadm control --reload` in the console.
+
+If you don't have permission to use `ttyUSB0` serial port you have to add your user to `dialout` group:
+
+`sudo usermod -aG dialout $USER`
+
+And reboot the system.
+
 ## How to use
 
-Firstly calibrate device input by clicking `Start calibration` button and follow calibration procedure described below. If you go through calibration with success you can start new tracking session by clicking the `New session` button, but before you must enter needed information in configuration form. 
+Firstly, calibrate device input by clicking `Start calibration` button and follow calibration procedure described below. If you go through calibration with success you can start new tracking session by clicking the `New session` button, but before you must enter needed information in configuration form. 
 
 ## Calibration
 
