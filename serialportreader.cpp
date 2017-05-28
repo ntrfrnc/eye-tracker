@@ -66,7 +66,7 @@ void SerialPortReader::handleReadyRead() {
   if ((dataBuffer.size() - indexOfFrame) < frameLength) {
     return;  // frame is not complete
   }
-  //  qDebug() << dataBuffer;
+  // qDebug() << dataBuffer;
   // qDebug() << "jest ok";
   // qDebug() << indexOfFrame;
   QByteArray frame = dataBuffer.mid(indexOfFrame, frameLength);

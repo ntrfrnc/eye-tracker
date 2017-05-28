@@ -24,9 +24,9 @@ Download it from http://www.ftdichip.com/Drivers/VCP.htm and install.
 
 If you use Ubuntu (at least version 11.10 ) drivers are already in kernel. To automatically load appropriate driver when device is plugged in you have to:
 
-1. Create file `/etc/udev/rules.d/99-ftdi.rules` if it doesn't exist already.
-2. Add the following line to the file `ACTION=="add", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="e859", RUN+="/sbin/modprobe ftdi_sio" RUN+="/bin/sh -c 'echo 0403 e859 > /sys/bus/usb-serial/drivers/ftdi_sio/new_id'"`.
-3. Run `sudo udevadm control --reload` in the console.
+1. Create file `/etc/udev/rules.d/99-ftdi.rules` if it doesn't exist already
+2. Add the following line to the file `ACTION=="add", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="e859", RUN+="/sbin/modprobe ftdi_sio" RUN+="/bin/sh -c 'echo 0403 e859 > /sys/bus/usb-serial/drivers/ftdi_sio/new_id'"`
+3. Run `sudo udevadm control --reload` in the console
 
 If you don't have permission to use `ttyUSB0` serial port you have to add your user to `dialout` group:
 
