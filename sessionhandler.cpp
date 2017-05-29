@@ -1,11 +1,7 @@
 #include "sessionhandler.h"
-#include <QDebug>
-#include <QGuiApplication>
 #include <QKeyEvent>
 #include <QPainter>
 #include <QPointF>
-#include <QRect>
-#include <QScreen>
 #include <QSizePolicy>
 
 SessionHandler::SessionHandler() : sessionCounter(1) {
@@ -59,10 +55,6 @@ bool SessionHandler::start() {
 
   outputFile.setFileName(filePath);
   if (outputFile.open(QFile::ReadWrite | QFile::Text)) {
-    // Get screen resolution
-    QScreen *screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-
     outputFileStream.setDevice(&outputFile);
     if (outputFile.pos() == 0) {
       // Add header if file is empty
@@ -70,8 +62,8 @@ bool SessionHandler::start() {
           << "sep=,\n"
           << tr("Session:, %1\n").arg(sessionCounter)
           << tr("Date:, %1\n").arg(QDateTime::currentDateTime().toString(Qt::ISODate))
-          << tr("Screen width [px]:, %1\n").arg(screenGeometry.width())
-          << tr("Screen height [px]:, %1\n").arg(screenGeometry.height())
+          << tr("Screen width [px]:, %1\n").arg(calibration->getScreenWidth())
+          << tr("Screen height [px]:, %1\n").arg(calibration->getScreenHeight())
           << "Time [ms], Eye position X [px], Eye position Y [px] \n";
     }
     connect(&positionReader, &DataHandler::eyePositionRead, this,
