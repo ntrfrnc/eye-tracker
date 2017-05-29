@@ -15,6 +15,7 @@
 #include "datahandler.h"
 
 class SessionHandler : public QWidget {
+  bool pointerStatus;
   QString filePath;
   QUrl bgUrl;
   QString serialPortName;
@@ -37,6 +38,7 @@ class SessionHandler : public QWidget {
   void setFilePath(QString path);
   void setBgUrl(QUrl url);
   void setSerialPort(QString serialPortName);
+  void setPointerStatus(bool status);
   void setCalibration(Calibration *calibration);
   bool start();
   void stop();

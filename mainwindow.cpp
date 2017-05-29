@@ -35,6 +35,7 @@ void MainWindow::on_startNewSessionPushButton_clicked() {
   sessionHandler.setBgUrl(QUrl(ui->boardBgLineEdit->text()));
   sessionHandler.setSerialPort(ui->serialPortNameLineEdit->text());
   sessionHandler.setCalibration(&calibrationHandler.calibration);
+  sessionHandler.setPointerStatus(ui->showPointerCheckBox->isChecked());
   bool success = sessionHandler.start();
 
   if (success) {

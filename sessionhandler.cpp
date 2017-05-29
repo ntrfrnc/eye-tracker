@@ -4,12 +4,16 @@
 #include <QPointF>
 #include <QSizePolicy>
 
-SessionHandler::SessionHandler() : sessionCounter(1) {
+SessionHandler::SessionHandler() : pointerStatus(true), sessionCounter(1) {
   layout.setMargin(0);
   layout.addWidget(&background, 0, 0, 1, 1);
   layout.addWidget(&pointerWidget, 0, 0, 1, 1);
   setLayout(&layout);
 }
+
+void SessionHandler::setPointerStatus(bool status){
+    pointerStatus = status;
+};
 
 void SessionHandler::setFilePath(QString path) { this->filePath = path; };
 
@@ -38,18 +42,24 @@ bool SessionHandler::start() {
     return false;
   }
 
-  pointerWidget.setCalibration(calibration);
-
   // Create and show session board
   background.load(bgUrl);
   background.show();
   grabKeyboard();
   showFullScreen();
 
-  pointerWidget.setPoint(QPointF(960, 520));
+  if (pointerStatus) {
+    pointerWidget.setCalibration(calibration);
+    pointerWidget.setPoint(QPointF(960, 520));
 
-  connect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget,
-          &EyePointerWidget::setEyesPosition);
+    connect(&positionReader, &DataHandler::eyePositionRead, &pointerWidget,
+            &EyePointerWidget::setEyesPosition);
+
+    pointerWidget.setAttribute(Qt::WA_TransparentForMouseEvents);
+    pointerWidget.show();
+  } else {
+    pointerWidget.hide();
+  }
 
   timer.restart();
 
@@ -71,9 +81,6 @@ bool SessionHandler::start() {
   } else {
     errorHandler.showMessage("Can't open/create file to record data.");
   }
-
-  pointerWidget.setAttribute(Qt::WA_TransparentForMouseEvents);
-  pointerWidget.show();
 
   sessionCounter++;
 

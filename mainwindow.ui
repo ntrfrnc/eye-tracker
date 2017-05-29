@@ -111,6 +111,23 @@
       <item row="1" column="2">
        <widget class="QComboBox" name="serialPortComboBox"/>
       </item>
+      <item row="4" column="1">
+       <widget class="QCheckBox" name="showPointerCheckBox">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="showPointerLabel">
+        <property name="text">
+         <string>Show pointer</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
