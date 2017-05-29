@@ -14,7 +14,6 @@ class MainWindow : public QMainWindow {
 
   SessionHandler sessionHandler;
   CalibrationHandler calibrationHandler;
-  uint sessionCounter;
 
  public:
   explicit MainWindow(QWidget *parent = 0);

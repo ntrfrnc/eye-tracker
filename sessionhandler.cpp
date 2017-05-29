@@ -1,11 +1,14 @@
 #include "sessionhandler.h"
 #include <QDebug>
+#include <QGuiApplication>
 #include <QKeyEvent>
 #include <QPainter>
 #include <QPointF>
+#include <QRect>
+#include <QScreen>
 #include <QSizePolicy>
 
-SessionHandler::SessionHandler() {
+SessionHandler::SessionHandler() : sessionCounter(1) {
   layout.setMargin(0);
   layout.addWidget(&background, 0, 0, 1, 1);
   layout.addWidget(&pointerWidget, 0, 0, 1, 1);
@@ -25,18 +28,19 @@ void SessionHandler::setCalibration(Calibration *calibration) {
 };
 
 bool SessionHandler::start() {
-  if (!positionReader.startReading(serialPortName)) {
-    errorHandler.showMessage(tr("Can't connect to serial port. Error: %1")
-                                 .arg(positionReader.errorString()));
-    positionReader.stopReading();
-    return false;
-  };
+//  if (!positionReader.startReading(serialPortName)) {
+//    errorHandler.showMessage(tr("Can't connect to serial port. Error: %1")
+//                                 .arg(positionReader.errorString()));
+//    positionReader.stopReading();
+//    return false;
+//  };
 
-  if(!calibration->isCalculated()){
-    errorHandler.showMessage("Calibration was not performed. You need to calibrate device first.");
-    positionReader.stopReading();
-    return false;
-  }
+//  if (!calibration->isCalculated()) {
+//    errorHandler.showMessage(
+//        "Calibration was not performed. You need to calibrate device first.");
+//    positionReader.stopReading();
+//    return false;
+//  }
 
   pointerWidget.setCalibration(calibration);
 
@@ -55,10 +59,19 @@ bool SessionHandler::start() {
 
   outputFile.setFileName(filePath);
   if (outputFile.open(QFile::ReadWrite | QFile::Text)) {
+    // Get screen resolution
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+
     outputFileStream.setDevice(&outputFile);
     if (outputFile.pos() == 0) {
       // Add header if file is empty
       outputFileStream
+          << "sep=,\n"
+          << tr("Session:, %1\n").arg(sessionCounter)
+          << tr("Date:, %1\n").arg(QDateTime::currentDateTime().toString(Qt::ISODate))
+          << tr("Screen width [px]:, %1\n").arg(screenGeometry.width())
+          << tr("Screen height [px]:, %1\n").arg(screenGeometry.height())
           << "Time [ms], Eye position X [px], Eye position Y [px] \n";
     }
     connect(&positionReader, &DataHandler::eyePositionRead, this,
@@ -69,6 +82,8 @@ bool SessionHandler::start() {
 
   pointerWidget.setAttribute(Qt::WA_TransparentForMouseEvents);
   pointerWidget.show();
+
+  sessionCounter++;
 
   return true;
 }

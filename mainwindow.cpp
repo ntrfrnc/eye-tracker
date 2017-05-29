@@ -7,7 +7,7 @@
 #include <QtSerialPort/QSerialPortInfo>
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), sessionCounter(1) {
+    : QMainWindow(parent), ui(new Ui::MainWindow){
   setWindowIcon(QIcon(":/app_icon.svg"));
   ui->setupUi(this);
 
@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget* parent)
   ui->fileNameLineEdit->setText(
       tr("eyetracker_session_%1_%2.csv")
           .arg(QDate::currentDate().toString(Qt::ISODate))
-          .arg(sessionCounter));
+          .arg(sessionHandler.sessionCounter));
   ui->boardBgLineEdit->setText(tr("qrc:///testBoard.html"));
 }
 
@@ -41,7 +41,7 @@ void MainWindow::on_startNewSessionPushButton_clicked() {
     ui->fileNameLineEdit->setText(
         tr("eyetracker_session_%1_%2.csv")
             .arg(QDate::currentDate().toString(Qt::ISODate))
-            .arg(++sessionCounter));
+            .arg(sessionHandler.sessionCounter));
   }
 }
 

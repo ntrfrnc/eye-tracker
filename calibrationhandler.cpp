@@ -1,5 +1,4 @@
 #include "calibrationhandler.h"
-#include <QDebug>
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QRect>

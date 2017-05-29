@@ -31,6 +31,8 @@ class SessionHandler : public QWidget {
   void keyPressEvent(QKeyEvent *event);
 
  public:
+  uint sessionCounter;
+
   SessionHandler();
   void setFilePath(QString path);
   void setBgUrl(QUrl url);
