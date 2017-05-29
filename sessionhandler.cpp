@@ -24,18 +24,18 @@ void SessionHandler::setCalibration(Calibration *calibration) {
   this->calibration = calibration;
 };
 
-void SessionHandler::start() {
+bool SessionHandler::start() {
   if (!positionReader.startReading(serialPortName)) {
     errorHandler.showMessage(tr("Can't connect to serial port. Error: %1")
                                  .arg(positionReader.errorString()));
     positionReader.stopReading();
-    return;
+    return false;
   };
 
   if(!calibration->isCalculated()){
     errorHandler.showMessage("Calibration was not performed. You need to calibrate device first.");
     positionReader.stopReading();
-    return;
+    return false;
   }
 
   pointerWidget.setCalibration(calibration);
@@ -69,6 +69,8 @@ void SessionHandler::start() {
 
   pointerWidget.setAttribute(Qt::WA_TransparentForMouseEvents);
   pointerWidget.show();
+
+  return true;
 }
 
 void SessionHandler::stop() {

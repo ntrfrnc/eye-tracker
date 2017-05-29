@@ -36,7 +36,7 @@ class SessionHandler : public QWidget {
   void setBgUrl(QUrl url);
   void setSerialPort(QString serialPortName);
   void setCalibration(Calibration *calibration);
-  void start();
+  bool start();
   void stop();
 
  public slots:
