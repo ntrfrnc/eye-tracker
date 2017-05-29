@@ -28,19 +28,19 @@ void SessionHandler::setCalibration(Calibration *calibration) {
 };
 
 bool SessionHandler::start() {
-//  if (!positionReader.startReading(serialPortName)) {
-//    errorHandler.showMessage(tr("Can't connect to serial port. Error: %1")
-//                                 .arg(positionReader.errorString()));
-//    positionReader.stopReading();
-//    return false;
-//  };
+  if (!positionReader.startReading(serialPortName)) {
+    errorHandler.showMessage(tr("Can't connect to serial port. Error: %1")
+                                 .arg(positionReader.errorString()));
+    positionReader.stopReading();
+    return false;
+  };
 
-//  if (!calibration->isCalculated()) {
-//    errorHandler.showMessage(
-//        "Calibration was not performed. You need to calibrate device first.");
-//    positionReader.stopReading();
-//    return false;
-//  }
+  if (!calibration->isCalculated()) {
+    errorHandler.showMessage(
+        "Calibration was not performed. You need to calibrate device first.");
+    positionReader.stopReading();
+    return false;
+  }
 
   pointerWidget.setCalibration(calibration);
 

@@ -116,8 +116,8 @@ QPointF Calibration::getPointOnScreen(QPointF point) {
   qreal x;
   qreal y;
 
-  x = ax*point.x() + bx*point.y() + cx;
-  y = ay*point.x() + by*point.y() + cy;
+  x = round(ax*point.x() + bx*point.y() + cx);
+  y = round(ay*point.x() + by*point.y() + cy);
 
   return QPointF(x, y);
 }
