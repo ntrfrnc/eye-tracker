@@ -76,6 +76,7 @@ class DataHandler : public QObject {
   qint32 calcOffsetX();
   qint32 calcOffsetY();
   qint32 bit12ToInt(QString input);
+  void readEyePosition(qint32 eyeX, qint32 eyeY);
 
  public:
   explicit DataHandler(QObject *parent = 0);

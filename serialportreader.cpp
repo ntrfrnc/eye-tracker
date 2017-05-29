@@ -1,5 +1,4 @@
 #include "serialportreader.h"
-#include <QDebug>
 
 SerialPortReader::SerialPortReader(QSerialPort *serialPort,
                                    QByteArray frameStartMarker,
@@ -42,35 +41,26 @@ void SerialPortReader::start() {
 };
 
 void SerialPortReader::handleReadyRead() {
-  if (serialPort->bytesAvailable() < frameLength) {
-    return;
-  }
-
   QByteArray data = serialPort->readAll();
-  // qDebug() << data;
-  //  qDebug() << m_frameLength;
-  //  qDebug() << m_frameMarker;
   dataBuffer.append(data);
-  // qDebug() << "data too short";
+
   if (dataBuffer.size() < frameLength) {
     return;  // data to short
   }
-  // qDebug() << "frame marker not found";
+
   int indexOfFrame = dataBuffer.indexOf(frameEndMarker + frameStartMarker) +
                      frameEndMarker.length();
-  // qDebug() << m_frameMarker;
+
   if (indexOfFrame < 0) {
     return;  // frame marker not found
   }
-  // qDebug() << "frame is not complete";
+
   if ((dataBuffer.size() - indexOfFrame) < frameLength) {
     return;  // frame is not complete
   }
-  // qDebug() << dataBuffer;
-  // qDebug() << "jest ok";
-  // qDebug() << indexOfFrame;
+
   QByteArray frame = dataBuffer.mid(indexOfFrame, frameLength);
-  // qDebug() << frame;
+
   // Remove processed data from the buffer
   dataBuffer = dataBuffer.right(indexOfFrame + frameLength);
 

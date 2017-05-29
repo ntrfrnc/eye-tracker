@@ -1,7 +1,5 @@
 #include "datahandler.h"
 
-#include <string>
-
 DataHandler::DataHandler(QObject *parent)
     : QObject(parent),
       baudRate(300000),
@@ -53,15 +51,16 @@ void DataHandler::stopReading() {
 void DataHandler::readHandler(QByteArray frame) {
   Packet packet = getPacket(frame);
 
-//  qDebug() << "synchro: " << packet.synchronization;
-//  qDebug() << "x: " << packet.eye_x_0;
-//  qDebug() << "y: " << packet.eye_y_0;
+  readEyePosition(bit12ToInt(packet.eye_x_0), bit12ToInt(packet.eye_y_0));
+  readEyePosition(bit12ToInt(packet.eye_x_1), bit12ToInt(packet.eye_y_1));
+}
 
+void DataHandler::readEyePosition(qint32 eyeX, qint32 eyeY) {
   xBuffer.removeFirst();
-  xBuffer.append(bit12ToInt(packet.eye_x_0));
+  xBuffer.append(eyeX);
 
   yBuffer.removeFirst();
-  yBuffer.append(bit12ToInt(packet.eye_y_0));
+  yBuffer.append(eyeY);
 
   trackOffsetX();
   trackOffsetY();
@@ -70,8 +69,8 @@ void DataHandler::readHandler(QByteArray frame) {
   qint32 y = yBuffer[2] + yOffset;
   QPointF point(x, y);
 
-  qDebug() << "x: " << x;
-  qDebug() << "y: " << y;
+//  qDebug() << "x: " << x;
+//  qDebug() << "y: " << y;
 
   // Invoke eyePositionRead signal
   eyePositionRead(point);

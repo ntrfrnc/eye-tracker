@@ -16,12 +16,6 @@ MainWindow::MainWindow(QWidget* parent)
     ui->serialPortComboBox->addItem(info.portName());
   }
 
-  ui->serialPortComboBox->insertSeparator(infos.length());
-
-  ui->serialPortComboBox->addItem(QString("COM3"));
-  ui->serialPortComboBox->addItem(QString("/dev/ttyUSB0"));
-  ui->serialPortComboBox->addItem(QString("/dev/pts/3"));
-
   ui->fileNameLineEdit->setText(tr("output.csv"));
   ui->boardBgLineEdit->setText(tr("qrc:///testBoard.html"));
 }
