@@ -11,7 +11,7 @@ class CalibrationHandler : public QWebEngineView {
 
   QPointF *ePs;  // eyetracker calibration points
   uint spaceCounter;
-  QPointF currentPoint;
+  QVector<QPointF> signalBuffer;
   QString serialPortName;
   DataHandler positionReader;
   QErrorMessage errorHandler;
@@ -22,6 +22,7 @@ class CalibrationHandler : public QWebEngineView {
   Calibration calibration;
 
   CalibrationHandler();
+  QPointF getAveragePosition();
   void start();
   void stop();
 
