@@ -51,20 +51,41 @@ You can exit this mode by hitting ESC key on keyboard.
 
 <h2>Session configuration</h2>
 
-<table style="margin-top:10px;"><tbody>
-<tr>
-<td style="padding-right:10px;padding-bottom:10px;"><b>Serial port name</b></td>
-<td style="padding-bottom:10px;">Name of serial port to which device is connected. Next to text field are listed detected ports and most likely ones like COM3 on Windows or ttyUSB0 on Linux.</td>
-</tr>
+<table style="margin-top:10px;">
+    <tbody>
+        <tr>
+            <td style="padding-right:10px;padding-bottom:10px;"><b>Serial port name</b></td>
+            <td style="padding-bottom:10px;">Name of serial port to which device is connected. Next to text field are listed detected ports and most likely ones like COM3 on Windows or ttyUSB0 on Linux.</td>
+        </tr>
 
-<tr>
-<td style="padding-right:10px;padding-bottom:10px;"><b>Recorded data file</b></td>
-<td style="padding-bottom:10px;">Path of file where you want to log all data of eye position recorded during session.</td>
-</tr>
+        <tr>
+            <td style="padding-right:10px;padding-bottom:10px;"><b>Recorded data file</b></td>
+            <td style="padding-bottom:10px;">Path of file where you want to log all data of eye position recorded during session.</td>
+        </tr>
 
-<tr>
-<td style="padding-right:10px;padding-bottom:10px;"><b>Board background</b></td>
-<td style="padding-bottom:10px;">Link to website e.g. http://google.com, or local html file. You can also use default build in test board with one column of text: qrc:///testBoard.html .</td>
-</tr>
+        <tr>
+            <td style="padding-right:10px;padding-bottom:10px;"><b>Board background</b></td>
+            <td style="padding-bottom:10px;">Link to website e.g. http://google.com, or local html file. You can also use default build in test board with one column of text: qrc:///testBoard.html .</td>
+        </tr>
+    </tbody>
+</table>
 
-</tbody></table>
+<h2>Chart plotter</h2>
+By clicking Plot data button you can plot all eye trace saved in chosen file. Chart is shown with board background chosen in session configuration as background. All plotted data with background will be automatically save as PNG image chosen in plot configuration form.
+<br>
+You can close plot view by hitting ESC key on keyboard. 
+
+<h3>Plotter configuration</h3>
+
+<table style="margin-top:10px;">
+    <tbody>
+        <tr>
+            <td style="padding-right:10px;padding-bottom:10px;"><b>Data file to plot</b></td>
+            <td style="padding-bottom:10px;">Path of data file which you want to plot.</td>
+        </tr>
+        <tr>
+            <td style="padding-right:10px;padding-bottom:10px;"><b>Output image</b></td>
+            <td style="padding-bottom:10px;">Path where chart will be saved as PNG file.</td>
+        </tr>                      
+    </tbody>
+</table>

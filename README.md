@@ -40,7 +40,7 @@ Firstly, calibrate device input by clicking `Start calibration` button and follo
 
 ## Calibration
 
-`Start calibration` button allows you to enter calibration mode. In this mode application shows calibration board stretched to screen resolution. Calibration procedure is to follow your eyes markers starting from top left, then stop on each one and hit space key on your keyboard. Correct order of markers to focus your eyes on is as follows: 
+`Start calibration` button allows you to enter calibration mode. In this mode application shows calibration board stretched to screen resolution. Calibration procedure is to follow your eyes markers starting from top left, then stop on each one and hit `space` key on your keyboard. Correct order of markers to focus your eyes on is as follows: 
 
 1. Top left 
 2. Center 
@@ -63,3 +63,16 @@ You can exit this mode by hitting `ESC` key on keyboard.
 | **Serial port name**   | Name of serial port to which device is connected. Next to text field are listed detected ports and most likely ones like COM3 on Windows or ttyUSB0 on Linux. |
 | **Recorded data file** | Path of file where you want to log all data of eye position recorded during session. |
 | **Board background**   | Link to website e.g. http://google.com, or local html file. You can also use default build in test board with one column of text: qrc:///testBoard.html . |
+
+## Chart plotter 
+
+By clicking `Plot data` button you can plot all eye trace saved in chosen file. Chart is shown with board background chosen in session configuration as background. All plotted data with background will be automatically save as PNG image chosen in plot configuration form.
+
+You can close plot view by hitting `ESC` key on keyboard. 
+
+### Plotter configuration
+
+| Field                 | Description                              |
+| --------------------- | ---------------------------------------- |
+| **Data file to plot** | Path of data file which you want to plot. |
+| **Output image**      | Path where chart will be saved as PNG file. |
