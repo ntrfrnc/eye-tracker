@@ -22,12 +22,17 @@ class MainWindow : public QMainWindow {
  private slots:
   void on_startCallibrationPushButton_clicked();
   void on_startNewSessionPushButton_clicked();
-  void on_stopSessionPushButton_clicked();
   void on_browseFileNamePushButton_clicked();
   void on_browseBoardBgPushButton_clicked();
   void on_serialPortComboBox_currentIndexChanged(const QString &arg1);
+  void on_plotDataPushButton_clicked();
+  void on_showHelpPushButton_clicked();
 
- private:
+  void on_browsePlotDataFilePushButton_clicked();
+
+  void on_browsePlotOutImagePushButton_clicked();
+
+private:
   Ui::MainWindow *ui;
 };
 

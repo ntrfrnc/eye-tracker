@@ -1,6 +1,5 @@
 #include "sessionhandler.h"
 #include <QKeyEvent>
-#include <QPainter>
 #include <QPointF>
 #include <QSizePolicy>
 

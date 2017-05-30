@@ -31,7 +31,9 @@ SOURCES += main.cpp\
     datahandler.cpp \
     serialportreader.cpp \
     calibration.cpp \
-    calibrationhandler.cpp
+    calibrationhandler.cpp \
+    dataplotter.cpp \
+    plotwidget.cpp
 
 HEADERS  += mainwindow.h \
     sessionhandler.h \
@@ -39,7 +41,9 @@ HEADERS  += mainwindow.h \
     datahandler.h \
     serialportreader.h \
     calibration.h \
-    calibrationhandler.h
+    calibrationhandler.h \
+    dataplotter.h \
+    plotwidget.h
 
 FORMS    += mainwindow.ui
 

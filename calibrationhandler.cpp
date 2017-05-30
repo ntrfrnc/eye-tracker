@@ -29,7 +29,7 @@ void CalibrationHandler::start() {
   spaceCounter = 1;
 
   // Create and show callibration board
-  load(QUrl("qrc:///callibrationBoard.html"));
+  load(QUrl("qrc:/callibrationBoard.html"));
   grabKeyboard();
   showFullScreen();
 }

@@ -1,6 +1,5 @@
 #include "eyepointerwidget.h"
 #include <QPainter>
-#include <QPointF>
 
 EyePointerWidget::EyePointerWidget(QWidget *parent) : QWidget(parent) {}
 
