@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "dataplotter.h"
 #include "ui_mainwindow.h"
 
 #include <QFileDialog>
@@ -36,6 +35,14 @@ MainWindow::~MainWindow() { delete ui; }
 void MainWindow::on_startCallibrationPushButton_clicked() {
   calibrationHandler.setSerialPort(ui->serialPortNameLineEdit->text());
   calibrationHandler.start();
+
+  if (ui->startSessionOnCalibEndCheckBox->isChecked()) {
+    connect(&calibrationHandler, &CalibrationHandler::stopped, this,
+            &MainWindow::on_startNewSessionPushButton_clicked);
+  } else {
+    disconnect(&calibrationHandler, &CalibrationHandler::stopped, this,
+               &MainWindow::on_startNewSessionPushButton_clicked);
+  }
 }
 
 void MainWindow::on_startNewSessionPushButton_clicked() {
@@ -58,7 +65,21 @@ void MainWindow::on_startNewSessionPushButton_clicked() {
             .arg(sessionHandler.sessionCounter));
 
     ui->plotDataFileLineEdit->setText(ui->fileNameLineEdit->text());
+
+    if (ui->plotDataOnSessionEndCheckBox->isChecked()) {
+      connect(&sessionHandler, &SessionHandler::stopped, this,
+              &MainWindow::on_plotDataPushButton_clicked);
+    } else {
+      disconnect(&sessionHandler, &SessionHandler::stopped, this,
+                 &MainWindow::on_plotDataPushButton_clicked);
+    }
   }
+}
+
+void MainWindow::on_plotDataPushButton_clicked() {
+  plotter.setOutImageFilePath(ui->plotOutImagePathLineEdit->text());
+  plotter.setBgUrl(QUrl(ui->boardBgLineEdit->text()));
+  plotter.start(ui->plotDataFileLineEdit->text());
 }
 
 void MainWindow::on_showHelpPushButton_clicked() {
@@ -98,13 +119,6 @@ void MainWindow::on_browseBoardBgPushButton_clicked() {
 void MainWindow::on_serialPortComboBox_currentIndexChanged(
     const QString& arg1) {
   ui->serialPortNameLineEdit->setText(arg1);
-}
-
-void MainWindow::on_plotDataPushButton_clicked() {
-  DataPlotter* plotter = new DataPlotter();
-  plotter->setOutImageFilePath(ui->plotOutImagePathLineEdit->text());
-  plotter->setBgUrl(QUrl(ui->boardBgLineEdit->text()));
-  plotter->start(ui->plotDataFileLineEdit->text());
 }
 
 void MainWindow::on_browsePlotDataFilePushButton_clicked() {

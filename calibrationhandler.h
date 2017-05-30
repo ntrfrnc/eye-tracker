@@ -7,6 +7,8 @@
 #include "datahandler.h"
 
 class CalibrationHandler : public QWebEngineView {
+  Q_OBJECT
+
   QPointF *ePs;  // eyetracker calibration points
   uint spaceCounter;
   QPointF currentPoint;
@@ -22,6 +24,9 @@ class CalibrationHandler : public QWebEngineView {
   CalibrationHandler();
   void start();
   void stop();
+
+ signals:
+  void stopped();
 
  public slots:
   void setCurrentPoint(QPointF point);

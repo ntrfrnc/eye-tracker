@@ -95,6 +95,8 @@ void SessionHandler::stop() {
   positionReader.stopReading();
   outputFile.close();
   hide();
+
+  emit stopped();
 }
 
 void SessionHandler::keyPressEvent(QKeyEvent *ke) {

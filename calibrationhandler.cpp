@@ -41,6 +41,8 @@ void CalibrationHandler::stop() {
              &CalibrationHandler::setCurrentPoint);
   positionReader.stopReading();
   hide();
+
+  emit stopped();
 }
 
 void CalibrationHandler::setCurrentPoint(QPointF point) {

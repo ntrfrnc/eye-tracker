@@ -15,6 +15,8 @@
 #include "datahandler.h"
 
 class SessionHandler : public QWidget {
+  Q_OBJECT
+
   bool pointerStatus;
   QString filePath;
   QUrl bgUrl;
@@ -42,6 +44,9 @@ class SessionHandler : public QWidget {
   void setCalibration(Calibration *calibration);
   bool start();
   void stop();
+
+ signals:
+  void stopped();
 
  public slots:
   void writePointToFile(QPointF point);

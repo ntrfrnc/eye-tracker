@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "calibrationhandler.h"
 #include "sessionhandler.h"
+#include "dataplotter.h"
 
 namespace Ui {
 class MainWindow;
@@ -14,6 +15,7 @@ class MainWindow : public QMainWindow {
 
   SessionHandler sessionHandler;
   CalibrationHandler calibrationHandler;
+  DataPlotter plotter;
 
  public:
   explicit MainWindow(QWidget *parent = 0);
@@ -27,9 +29,7 @@ class MainWindow : public QMainWindow {
   void on_serialPortComboBox_currentIndexChanged(const QString &arg1);
   void on_plotDataPushButton_clicked();
   void on_showHelpPushButton_clicked();
-
   void on_browsePlotDataFilePushButton_clicked();
-
   void on_browsePlotOutImagePushButton_clicked();
 
 private:

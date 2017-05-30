@@ -12,6 +12,8 @@
 #include <QWidget>
 
 class DataPlotter : public QWidget {
+  Q_OBJECT;
+
   QString outImageFilePath;
   QUrl bgUrl;
   QWebEngineView background;
@@ -30,6 +32,7 @@ class DataPlotter : public QWidget {
   void stop();
 
  signals:
+  void stopped();
 
  public slots:
   void saveOutputImage();

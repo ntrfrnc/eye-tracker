@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>324</height>
+    <height>393</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -37,11 +37,56 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QLabel" name="calibrationConfigLabel">
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Calibration</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="startSessionOnCalibEndCheckBox">
+        <property name="text">
+         <string>Start session on calibration finish</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout" rowminimumheight="0,0,0,0,20,0">
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="showPointerCheckBox">
+        <property name="text">
+         <string>Show pointer</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0" colspan="2">
        <widget class="QLabel" name="sessionConfigLabel">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;New session configuration&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;Tracking session&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -111,29 +156,43 @@
       <item row="1" column="2">
        <widget class="QComboBox" name="serialPortComboBox"/>
       </item>
-      <item row="4" column="1">
-       <widget class="QCheckBox" name="showPointerCheckBox">
+      <item row="5" column="0" colspan="2">
+       <widget class="QCheckBox" name="plotDataOnSessionEndCheckBox">
         <property name="text">
-         <string/>
+         <string>Plot data on session finish</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="showPointerLabel">
-        <property name="text">
-         <string>Show pointer</string>
-        </property>
-       </widget>
-      </item>
      </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
     </item>
     <item>
      <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,0,0">
       <item row="1" column="1">
        <widget class="QLineEdit" name="plotDataFileLineEdit"/>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="plotterConfigLabel">
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Plotter</string>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="plotOutImageLabel">
@@ -152,13 +211,6 @@
       <item row="2" column="1">
        <widget class="QLineEdit" name="plotOutImagePathLineEdit"/>
       </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="browsePlotDataFilePushButton">
-        <property name="text">
-         <string>Browse</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="2">
        <widget class="QPushButton" name="browsePlotOutImagePushButton">
         <property name="text">
@@ -166,17 +218,10 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="plotterConfigLabel">
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="browsePlotDataFilePushButton">
         <property name="text">
-         <string>Plotter configuration</string>
+         <string>Browse</string>
         </property>
        </widget>
       </item>
