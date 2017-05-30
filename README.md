@@ -2,7 +2,7 @@
 
 C++ Qt app for tracking eyes focus on screen by JAZZ-novo eye tracker device. 
 
-**Version** 0.1-alpha
+**Version** 0.2-alpha
 
 ![img](Screenshot.png) 
 
