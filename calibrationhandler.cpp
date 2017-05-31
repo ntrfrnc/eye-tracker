@@ -4,7 +4,7 @@
 #include <QRect>
 #include <QScreen>
 
-CalibrationHandler::CalibrationHandler() : signalBuffer(2) {}
+CalibrationHandler::CalibrationHandler() {}
 
 void CalibrationHandler::setSerialPort(QString serialPortName) {
   this->serialPortName = serialPortName;
@@ -46,27 +46,7 @@ void CalibrationHandler::stop() {
 }
 
 void CalibrationHandler::setCurrentPoint(QPointF point) {
-  signalBuffer.removeFirst();
-  signalBuffer.append(point);
-}
-
-QPointF CalibrationHandler::getAveragePosition() {
-  qint32 x = 0;
-  qint32 y = 0;
-
-  // Implement moving average
-
-  int l = signalBuffer.length();
-
-  for (int i = 0; i < l; i++) {
-    x += signalBuffer[i].x();
-    y += signalBuffer[i].y();
-  }
-
-  x /= l;
-  y /= l;
-
-  return QPointF(x, y);
+  currentPoint = point;
 }
 
 void CalibrationHandler::keyPressEvent(QKeyEvent *ke) {
@@ -78,29 +58,29 @@ void CalibrationHandler::keyPressEvent(QKeyEvent *ke) {
     case Qt::Key_Space:
       switch (spaceCounter) {
         case 1:
-          ePs[0] = getAveragePosition();  // Top left
+          ePs[0] = currentPoint;  // Top left
           break;
 
         case 2:
-          ePs[1] = getAveragePosition();  // Center
+          ePs[1] = currentPoint;  // Center
           break;
 
         case 3:
-          ePs[2] = getAveragePosition();  // Bottom right
+          ePs[2] = currentPoint;  // Bottom right
           break;
 
         case 4:
-          ePs[3] = getAveragePosition();  // Bottom left
+          ePs[3] = currentPoint;  // Bottom left
           break;
 
         case 5:
           // Center 2nd time
-          ePs[1].setX((ePs[1].x() + getAveragePosition().x()) / 2);
-          ePs[1].setY((ePs[1].y() + getAveragePosition().y()) / 2);
+          ePs[1].setX((ePs[1].x() + currentPoint.x()) / 2);
+          ePs[1].setY((ePs[1].y() + currentPoint.y()) / 2);
           break;
 
         case 6:
-          ePs[4] = getAveragePosition();  // Top right
+          ePs[4] = currentPoint;  // Top right
 
           if (!calibration.calculateFactors(ePs)) {
             errorHandler.showMessage(
