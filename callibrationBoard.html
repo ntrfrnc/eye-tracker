@@ -35,19 +35,19 @@
         border-radius: 50%;
       }
       .target.info:before{
-  content: 'x: ' attr(data-x);
-  position:absolute;
-  top:25%;
-  left:50%;
-  transform: translate(-50%, -50%);
-}
-.target.info:after{
-  content: 'y: ' attr(data-y);
-  position:absolute;
-  top:75%;
-  left:50%;
-  transform: translate(-50%, -50%);
-}
+        content: 'x: ' attr(data-x);
+        position:absolute;
+        top:25%;
+        left:50%;
+        transform: translate(-50%, -50%);
+      }
+        .target.info:after{
+        content: 'y: ' attr(data-y);
+        position:absolute;
+        top:75%;
+        left:50%;
+        transform: translate(-50%, -50%);
+      }
       #target1{
         top:0;
         left:0;
@@ -130,20 +130,6 @@ function setTargetCoord(target, tPos){
   target.setAttribute('data-y', tPos.y);
 }
 
-
-var timer = {
-    start: function () {
-        this.timerSteps = [];
-        var d = new Date();
-        this.timerStep.push(d.getTime());
-    },
-    
-    addStep: function () {
-        d = new Date();
-        timerStep.push(d.getTime());
-    }
-}
-
 function keyCommands(e) {
   switch(e.keyCode){
     case 73: // i
@@ -152,14 +138,6 @@ function keyCommands(e) {
         targets[i].classList.toggle('info');
       }
       break;
-      
-    case 32: // Space
-        if(!timer.started){
-          startTimer();
-        } else {
-          addTmerStep();
-        }
-        
   }
 }
 
