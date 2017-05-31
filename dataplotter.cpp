@@ -3,6 +3,7 @@
 #include <QGuiApplication>
 #include <QImage>
 #include <QKeyEvent>
+#include <QMessageBox>
 #include <QPixmap>
 #include <QRect>
 #include <QScreen>
@@ -87,7 +88,21 @@ void DataPlotter::saveOutputImage() {
   this->render(&pixmap);
 
   QFile file(outImageFilePath);
-  file.open(QIODevice::WriteOnly);
+
+  if (file.exists()) {
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("File already exists");
+    msgBox.setText(tr("File '%1' already exists. Do you want to override it?")
+                       .arg(outImageFilePath));
+    msgBox.setStandardButtons(QMessageBox::Yes);
+    msgBox.addButton(QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    if (msgBox.exec() == QMessageBox::No) {
+      return;
+    }
+  }
+
+  file.open(QIODevice::WriteOnly | QIODevice::Truncate);
   pixmap.save(&file, "PNG");
   file.close();
 }

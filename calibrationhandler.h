@@ -22,7 +22,6 @@ class CalibrationHandler : public QWebEngineView {
   Calibration calibration;
 
   CalibrationHandler();
-  QPointF getCurrentPosition();
   void start();
   void stop();
 

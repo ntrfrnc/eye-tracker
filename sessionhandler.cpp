@@ -1,5 +1,6 @@
 #include "sessionhandler.h"
 #include <QKeyEvent>
+#include <QMessageBox>
 #include <QPointF>
 #include <QSizePolicy>
 
@@ -10,9 +11,7 @@ SessionHandler::SessionHandler() : pointerStatus(true), sessionCounter(1) {
   setLayout(&layout);
 }
 
-void SessionHandler::setPointerStatus(bool status){
-    pointerStatus = status;
-};
+void SessionHandler::setPointerStatus(bool status) { pointerStatus = status; };
 
 void SessionHandler::setFilePath(QString path) { this->filePath = path; };
 
@@ -41,6 +40,29 @@ bool SessionHandler::start() {
     return false;
   }
 
+  outputFile.setFileName(filePath);
+
+  if (outputFile.exists()) {
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("File already exists");
+    msgBox.setText(tr("File '%1' already exists. Do you want to override it?")
+                       .arg(filePath));
+    msgBox.setStandardButtons(QMessageBox::Yes);
+    msgBox.addButton(QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    if (msgBox.exec() == QMessageBox::No) {
+      positionReader.stopReading();
+      return false;
+    }
+  }
+
+  if (!outputFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+    errorHandler.showMessage("Can't open/create file to record data.");
+    positionReader.stopReading();
+    return false;
+  }
+
   // Create and show session board
   background.load(bgUrl);
   background.show();
@@ -61,27 +83,23 @@ bool SessionHandler::start() {
   }
 
   timer.restart();
+  sessionCounter++;
 
-  outputFile.setFileName(filePath);
-  if (outputFile.open(QFile::ReadWrite | QFile::Text)) {
-    outputFileStream.setDevice(&outputFile);
-    if (outputFile.pos() == 0) {
-      // Add header if file is empty
-      outputFileStream
-          << "sep=,\n"
-          << tr("Session:, %1\n").arg(sessionCounter)
-          << tr("Date:, %1\n").arg(QDateTime::currentDateTime().toString(Qt::ISODate))
-          << tr("Screen width [px]:, %1\n").arg(calibration->getScreenWidth())
-          << tr("Screen height [px]:, %1\n").arg(calibration->getScreenHeight())
-          << "Time [ms], Eye position X [px], Eye position Y [px] \n";
-    }
-    connect(&positionReader, &DataHandler::eyePositionRead, this,
-            &SessionHandler::writePointToFile);
-  } else {
-    errorHandler.showMessage("Can't open/create file to record data.");
+  outputFileStream.setDevice(&outputFile);
+
+  if (outputFile.pos() == 0) {
+    // Add header if file is empty
+    outputFileStream
+        << "sep=,\n"
+        << tr("Session:, %1\n").arg(sessionCounter)
+        << tr("Date:, %1\n").arg(QDateTime::currentDateTime().toString(Qt::ISODate))
+        << tr("Screen width [px]:, %1\n").arg(calibration->getScreenWidth())
+        << tr("Screen height [px]:, %1\n").arg(calibration->getScreenHeight())
+        << "Time [ms], Eye position X [px], Eye position Y [px] \n";
   }
 
-  sessionCounter++;
+  connect(&positionReader, &DataHandler::eyePositionRead, this,
+          &SessionHandler::writePointToFile);
 
   return true;
 }
