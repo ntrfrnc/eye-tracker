@@ -95,8 +95,8 @@ bool Calibration::calculateFactors(QPointF *ePs) {
   dY2 = n*(Y2*a-Y1*c)+d*(Y1*e-Y2*d)+Y3*(c*d-a*e);
   dY3 = Y3*(a*b-c*c)+Y1*(c*e-b*d)+Y2*(c*d-a*e);
 
-  if(d0 == 0.0){
-      return false;
+  if (d0 == 0.0) {
+    return false;
   }
 
   ax = dX1/d0;

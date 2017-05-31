@@ -11,14 +11,16 @@ void PlotWidget::paintEvent(QPaintEvent *) {
   pen.setWidth(3);
   painter.setRenderHint(QPainter::Antialiasing, true);
   painter.setPen(pen);
-  painter.drawLines(points);
+
+  int l = points.length() - 1;
+
+  for (int i = 0; i < l; i++) {
+    painter.drawLine(points[i], points[i + 1]);
+  }
+
   painter.end();
 }
 
-void PlotWidget::addPoint(QPointF point) {
-  this->points.append(point);
-}
+void PlotWidget::addPoint(QPointF point) { this->points.append(point); }
 
-void PlotWidget::clearPoints() {
-  this->points.clear();
-}
+void PlotWidget::clearPoints() { this->points.clear(); }

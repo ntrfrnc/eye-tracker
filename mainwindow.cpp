@@ -54,17 +54,16 @@ void MainWindow::on_startNewSessionPushButton_clicked() {
   bool success = sessionHandler.start();
 
   if (success) {
-    ui->fileNameLineEdit->setText(
-        tr("eyetracker_session_%1_%2.csv")
-            .arg(QDate::currentDate().toString(Qt::ISODate))
-            .arg(sessionHandler.sessionCounter));
+    ui->plotDataFileLineEdit->setText(ui->fileNameLineEdit->text());
 
     ui->plotOutImagePathLineEdit->setText(
-        tr("eyetracker_session_%1_%2.png")
-            .arg(QDate::currentDate().toString(Qt::ISODate))
-            .arg(sessionHandler.sessionCounter));
+        ui->plotOutImagePathLineEdit->text().replace(
+            tr("_%1.png").arg(sessionHandler.sessionCounter - 2),
+            tr("_%1.png").arg(sessionHandler.sessionCounter - 1)));
 
-    ui->plotDataFileLineEdit->setText(ui->fileNameLineEdit->text());
+    ui->fileNameLineEdit->setText(ui->plotOutImagePathLineEdit->text().replace(
+        tr("_%1.csv").arg(sessionHandler.sessionCounter - 1),
+        tr("_%1.csv").arg(sessionHandler.sessionCounter)));
 
     if (ui->plotDataOnSessionEndCheckBox->isChecked()) {
       connect(&sessionHandler, &SessionHandler::stopped, this,

@@ -4,7 +4,7 @@
 #include <QRect>
 #include <QScreen>
 
-CalibrationHandler::CalibrationHandler() : signalBuffer(10) {}
+CalibrationHandler::CalibrationHandler() : signalBuffer(2) {}
 
 void CalibrationHandler::setSerialPort(QString serialPortName) {
   this->serialPortName = serialPortName;
@@ -64,7 +64,7 @@ QPointF CalibrationHandler::getAveragePosition() {
   }
 
   x /= l;
-  y /= y;
+  y /= l;
 
   return QPointF(x, y);
 }
@@ -101,12 +101,13 @@ void CalibrationHandler::keyPressEvent(QKeyEvent *ke) {
 
         case 6:
           ePs[4] = getAveragePosition();  // Top right
-          stop();
 
           if (!calibration.calculateFactors(ePs)) {
             errorHandler.showMessage(
                 "Error occured during calibration. Please try again.");
           }
+
+          stop();
           break;
       }
 

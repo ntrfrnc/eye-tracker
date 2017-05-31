@@ -65,7 +65,10 @@ void DataPlotter::plot(QString dataFilePath) {
 
   plotter.clearPoints();
 
-  int screenHeight = this->size().height();
+  // Get screen resolution
+  QScreen *screen = QGuiApplication::primaryScreen();
+  QRect screenGeometry = screen->geometry();
+  int screenHeight = screenGeometry.height();
 
   while (!dataStream.atEnd()) {
     QString line = dataStream.readLine();
