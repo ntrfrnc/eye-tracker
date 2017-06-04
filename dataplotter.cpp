@@ -92,7 +92,7 @@ void DataPlotter::saveOutputImage() {
   if (file.exists()) {
     QMessageBox msgBox;
     msgBox.setWindowTitle("File already exists");
-    msgBox.setText(tr("File '%1' already exists. Do you want to override it?")
+    msgBox.setText(tr("File '%1' already exists. Do you want to overwrite it?")
                        .arg(outImageFilePath));
     msgBox.setStandardButtons(QMessageBox::Yes);
     msgBox.addButton(QMessageBox::No);

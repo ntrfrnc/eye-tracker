@@ -61,7 +61,7 @@
       <item row="1" column="0" colspan="2">
        <widget class="QCheckBox" name="startSessionOnCalibEndCheckBox">
         <property name="text">
-         <string>Start session when calibration end</string>
+         <string>Start session when calibration ends</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -165,7 +165,7 @@
       <item row="5" column="0" colspan="2">
        <widget class="QCheckBox" name="plotDataOnSessionEndCheckBox">
         <property name="text">
-         <string>Plot data when session end</string>
+         <string>Plot data when session ends</string>
         </property>
         <property name="checked">
          <bool>true</bool>
