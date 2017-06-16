@@ -76,3 +76,11 @@ You can close plot view by hitting `ESC` key on keyboard.
 | --------------------- | ---------------------------------------- |
 | **Data file to plot** | Path of data file which you want to plot. |
 | **Output image**      | Path where chart will be saved as PNG file. |
+
+## License
+
+EyeTracker is released under the terms of the MIT license. See LICENSE file for details.
+
+## Credits
+
+EyeTracker is developed by Rafael Pawlos, http://rafaelpawlos.com
