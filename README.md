@@ -77,6 +77,10 @@ You can close plot view by hitting `ESC` key on keyboard.
 | **Data file to plot** | Path of data file which you want to plot. |
 | **Output image**      | Path where chart will be saved as PNG file. |
 
+## How it works
+
+See [brief documentation in pdf](How_EyeTracker_works_pl.pdf) (polish language only).
+
 ## License
 
 EyeTracker is released under the terms of the MIT license. See LICENSE file for details.
