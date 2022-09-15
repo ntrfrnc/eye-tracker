@@ -87,4 +87,4 @@ EyeTracker is released under the terms of the MIT license. See LICENSE file for 
 
 ## Credits
 
-EyeTracker is developed by Rafael Pawlos, http://rafaelpawlos.com
+EyeTracker is developed by Rafael Pawlos, [pawlos.dev](https://pawlos.dev)
